@@ -237,6 +237,26 @@ export const playgroundOptions = [
   },
 ];
 
+### Object 1
+
+<Canvas>
+  <Story name="Object 1">
+    {() => {
+      return (
+        <IcSelect
+          label="What is your favourite coffee?"
+          options={[
+            {label: "Cappuccino", value: {
+              foo: '"string"'
+            }}
+          ]}
+          onIcChange={(event) => console.log(event.detail.value)}
+        />
+      );
+    }}
+  </Story>
+</Canvas>
+
 ### Default
 
 <Canvas>

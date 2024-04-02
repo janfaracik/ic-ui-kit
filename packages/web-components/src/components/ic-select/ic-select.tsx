@@ -68,6 +68,7 @@ export class Select {
   private searchableSelectElement: HTMLInputElement;
   private timeoutTimer: number;
   private ungroupedOptions: IcMenuOption[] = [];
+  private areValuesObject = false;
 
   @Element() el!: HTMLIcSelectElement;
 
@@ -357,6 +358,35 @@ export class Select {
     removeFormResetListener(this.el, this.handleFormReset);
   }
 
+  // private menuItemWithObjectValue = (options: any[]) => {
+  //   options.forEach((value: any) => {
+  //     // console.log(value)
+  //   })
+  //   //loop through each option to get value 
+  //   //check if value is string or object 
+  //   // recreate options list as object instead of a string - state? 
+  //   //return new options 
+
+  // }
+
+
+  // private object_test = (value: string) => {
+  //   if(typeof value ==="object"){
+  //     console.log("A Object")
+  //   }
+  // }
+
+  private isValueObject = (value: object | string) => {
+    if (typeof value === "object") return true;
+    try {
+      JSON.parse(value);
+      return true
+    } catch (e) {
+      return false;
+  }
+
+}
+
   componentWillLoad(): void {
     this.inheritedAttributes = inheritAttributes(this.el, [
       ...IC_INHERITED_ARIA,
@@ -366,8 +396,15 @@ export class Select {
 
     removeDisabledFalse(this.disabled, this.el);
 
-    this.setOptionsValuesFromLabels();
-
+    this.areValuesObject = this.options.map((option) => {
+      return this.isValueObject(option.value)
+    }).every ((isValueObject)=>{
+      return !!isValueObject
+    })
+    
+    if (!this.areValuesObject){
+      this.setOptionsValuesFromLabels();
+    }
     addFormResetListener(this.el, this.handleFormReset);
 
     if (!this.options.length) {
@@ -376,9 +413,11 @@ export class Select {
       this.uniqueOptions = this.noOptions;
       this.filteredOptions = this.noOptions;
     } else {
-      this.setDefaultValue();
-      this.uniqueOptions = this.deduplicateOptions(this.options);
+      // this.setDefaultValue();
+      // this.menuItemWithObjectValue(this.options);
+      // this.uniqueOptions = this.deduplicateOptions(this.options);
     }
+
   }
 
   componentDidLoad(): void {
@@ -428,6 +467,10 @@ export class Select {
   }
 
   private emitIcChange = (value: string) => {
+    //check value is object or string - done... it is a string! 
+    //JSON.Parse
+    //454 if string then pass through value if object then return object instead - is it not already passing through a string
+    //create examples on storybook on web and react of different sizes but remeber react can pass through an object  - created ?
     if (!this.searchable) {
       this.value = value;
     }
@@ -555,6 +598,8 @@ export class Select {
   };
 
   private handleCustomSelectChange = (event: CustomEvent): void => {
+    console.log("Hello from method 1")
+    console.log(event.detail.value + "this here")
     if (this.searchable && event.detail.label === this.emptyOptionListText) {
       this.searchableSelectElement.focus();
       return;

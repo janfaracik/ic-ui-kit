@@ -33,6 +33,77 @@ export const validationArgType = {
   },
 };
 
+
+### Object 1
+
+<Canvas>
+  <Story name="Object 1" parameters={{ loki: { skip: true } }}>
+    {(args) =>
+      html`<ic-select
+          id="select-1"
+          label="What is your favourite coffee?"
+        ></ic-select>
+        <script>
+          var select = document.querySelector("#select-1");
+          select.options = [
+            { label: "Cappuccino", value: '{"foo": "string"}' },
+            { label: "Coffee", value: "test" }
+          ];
+          select.addEventListener("icChange", function (event) {
+            console.log(event.detail.value);
+          });
+        </script>`
+    }
+  </Story>
+</Canvas>
+
+### Object 2
+
+<Canvas>
+  <Story name="Object 2" parameters={{ loki: { skip: true } }}>
+    {(args) =>
+      html`<ic-select
+          id="select-1"
+          label="What is your favourite coffee?"
+        ></ic-select>
+        <script>
+          var select = document.querySelector("#select-1");
+          select.options = [
+            { label: "Cappuccino", value: "Cap" },
+            { label: "Latte", value: "Lat" },
+          ];
+          select.addEventListener("icChange", function (event) {
+            console.log(event.detail.value);
+          });
+        </script>`
+    }
+  </Story>
+</Canvas>
+
+### Object 3
+
+<Canvas>
+  <Story name="Object 3" parameters={{ loki: { skip: true } }}>
+    {(args) =>
+      html`<ic-select
+          id="select-1"
+          label="What is your favourite coffee?"
+        ></ic-select>
+        <script>
+          var select = document.querySelector("#select-1");
+          select.options = [
+            { label: "Cappuccino", value: "Cap" },
+            { label: "Latte", value: "Lat" },
+            { label: "Americano", value: "Ame" },
+          ];
+          select.addEventListener("icChange", function (event) {
+            console.log(event.detail.value);
+          });
+        </script>`
+    }
+  </Story>
+</Canvas>
+
 ### Default
 
 <Canvas>
