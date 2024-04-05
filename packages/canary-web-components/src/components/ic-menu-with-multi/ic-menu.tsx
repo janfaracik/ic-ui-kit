@@ -594,9 +594,7 @@ export class Menu {
       this.keyboardNav = false;
     }
 
-    const highlightedOptionIndex = menuOptions.findIndex(
-      (option) => option[this.valueField] === this.optionHighlighted
-    );
+    const highlightedOptionIndex = this.getOptionHighlightedIndex();
 
     const clickedMultiOptionIndex = menuOptions.findIndex(
       (option) => option[this.valueField] === this.multiOptionClicked
@@ -623,17 +621,7 @@ export class Menu {
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
           } else {
-            if (
-              this.isMultiSelect &&
-              event.shiftKey &&
-              !this.value?.includes(this.optionHighlighted)
-            ) {
-              this.selectHighlightedOption(
-                event.target,
-                menuOptions,
-                highlightedOptionIndex
-              );
-            }
+            this.handleShiftKeyDown(event, highlightedOptionIndex, menuOptions);
 
             if (highlightedOptionIndex < menuOptions.length - 1) {
               this.setHighlightedOption(highlightedOptionIndex + 1);
@@ -641,41 +629,27 @@ export class Menu {
                 optionId: getOptionId(highlightedOptionIndex + 1),
               });
 
-              if (this.isMultiSelect && event.shiftKey) {
-                // If down arrow is pressed for first time after shift is held
-                if (this.shiftPressed) {
-                  this.deselectSelectedOptions([
-                    highlightedOptionIndex,
-                    highlightedOptionIndex + 1,
-                  ]);
-                  this.shiftPressed = false;
-                }
-
-                if (!this.isOptionSelected(highlightedOptionIndex + 1)) {
-                  this.selectHighlightedOption(
-                    event.target,
-                    menuOptions,
-                    highlightedOptionIndex + 1
-                  );
-                }
-              }
+              this.handleShiftKeyDown(
+                event,
+                highlightedOptionIndex + 1,
+                menuOptions
+              );
             } else {
               this.setHighlightedOption(0);
               this.menuOptionId.emit({
                 optionId: getOptionId(0),
               });
 
-              if (this.isMultiSelect && event.shiftKey) {
-                // If down arrow is pressed for first time after shift is held
-                if (this.shiftPressed) {
-                  this.deselectSelectedOptions([highlightedOptionIndex, 0]);
-                  this.shiftPressed = false;
-                }
+              this.handleShiftKeyDown(event, 0, menuOptions);
+            }
 
-                if (!this.isOptionSelected(0)) {
-                  this.selectHighlightedOption(event.target, menuOptions, 0);
-                }
-              }
+            // Deselect currently selected options if arrow was pressed for first time after shift is held
+            if (this.isMultiSelect && this.shiftPressed) {
+              this.deselectSelectedOptions([
+                highlightedOptionIndex,
+                this.getOptionHighlightedIndex(),
+              ]);
+              this.shiftPressed = false;
             }
           }
 
@@ -915,6 +889,20 @@ export class Menu {
     event.preventDefault();
   };
 
+  private handleShiftKeyDown = (
+    event: KeyboardEvent,
+    optionToSelectIndex: number,
+    options: IcMenuOption[]
+  ) => {
+    if (
+      this.isMultiSelect &&
+      event.shiftKey &&
+      !this.isOptionSelected(optionToSelectIndex)
+    ) {
+      this.selectHighlightedOption(event.target, options, optionToSelectIndex);
+    }
+  };
+
   private emitSelectAll = () => {
     // Select all if there is either no value or not all options are selected
     // 'true' means select all, 'false' means clear all
@@ -1032,6 +1020,14 @@ export class Menu {
       );
     }
     return sorted;
+  };
+
+  private getOptionHighlightedIndex = () => {
+    const menuOptions = this.getMenuOptions();
+
+    return menuOptions.findIndex(
+      (option) => option[this.valueField] === this.optionHighlighted
+    );
   };
 
   private isManualMode = this.activationType === "manual";
