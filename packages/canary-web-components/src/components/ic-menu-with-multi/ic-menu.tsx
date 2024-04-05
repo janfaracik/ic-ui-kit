@@ -63,6 +63,7 @@ export class Menu {
   @State() optionHighlighted: string;
   @State() preventIncorrectTabOrder: boolean = false;
   @State() menuOptions: IcMenuOption[];
+  @State() shiftPressed: boolean = false;
 
   /**
    * Determines whether options manually set as values (by pressing 'Enter') when they receive focus using keyboard navigation.
@@ -540,7 +541,8 @@ export class Menu {
             this.disabledOptionSelected = true;
           } else {
             this.setInputValue(highlightedOptionIndex);
-            this.value = options[highlightedOptionIndex][this.valueField];
+            // CHECK THAT REMOVING THIS IS NOT AN ISSUE FOR SINGLE SELECT
+            // this.value = options[highlightedOptionIndex][this.valueField];
           }
         }
       } else {
@@ -554,11 +556,43 @@ export class Menu {
     }
   };
 
+  // Check if option is selected based on the index of the option
+  private isOptionSelected = (index: number) => {
+    return this.value
+      ? this.value.includes(this.options[index][this.valueField])
+      : false;
+  };
+
+  // Deselect currently selected options when shift pressed
+  // If the two first new options being selected were already selected, don't re-add to selection i.e. don't emit icOptionSelect again
+  private deselectSelectedOptions = (optionsToKeepSelected: number[]) => {
+    const menuOptions = this.getMenuOptions();
+
+    if (this.value) {
+      const selectedOptionIndexes = (this.value as string[]).map((value) => {
+        return menuOptions.findIndex(
+          (option) => option[this.valueField] === value
+        );
+      });
+
+      selectedOptionIndexes.forEach(
+        (index) =>
+          !optionsToKeepSelected.includes(index) && this.setInputValue(index)
+      );
+    }
+  };
+
   // Determines keyboard behaviour when selection is manual (i.e. when you have to press Enter to select an option)
   private manualSetInputValueKeyboardOpen = (event: KeyboardEvent) => {
     const menuOptions = this.getMenuOptions();
 
-    this.keyboardNav = false;
+    // Prevent focus disappearing on currently focused option when Shift / Cmd / Ctrl pressed
+    if (
+      !event.shiftKey &&
+      !((isMacDevice() && event.metaKey) || (!isMacDevice() && event.ctrlKey))
+    ) {
+      this.keyboardNav = false;
+    }
 
     const highlightedOptionIndex = menuOptions.findIndex(
       (option) => option[this.valueField] === this.optionHighlighted
@@ -588,17 +622,63 @@ export class Menu {
             // Prevents it resetting to the top of the menu when user switches to using keyboard
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
-          } else if (highlightedOptionIndex < menuOptions.length - 1) {
-            this.setHighlightedOption(highlightedOptionIndex + 1);
-            this.menuOptionId.emit({
-              optionId: getOptionId(highlightedOptionIndex + 1),
-            });
           } else {
-            this.setHighlightedOption(0);
-            this.menuOptionId.emit({
-              optionId: getOptionId(0),
-            });
+            if (
+              this.isMultiSelect &&
+              event.shiftKey &&
+              !this.value?.includes(this.optionHighlighted)
+            ) {
+              this.selectHighlightedOption(
+                event.target,
+                menuOptions,
+                highlightedOptionIndex
+              );
+            }
+
+            if (highlightedOptionIndex < menuOptions.length - 1) {
+              this.setHighlightedOption(highlightedOptionIndex + 1);
+              this.menuOptionId.emit({
+                optionId: getOptionId(highlightedOptionIndex + 1),
+              });
+
+              if (this.isMultiSelect && event.shiftKey) {
+                // If down arrow is pressed for first time after shift is held
+                if (this.shiftPressed) {
+                  this.deselectSelectedOptions([
+                    highlightedOptionIndex,
+                    highlightedOptionIndex + 1,
+                  ]);
+                  this.shiftPressed = false;
+                }
+
+                if (!this.isOptionSelected(highlightedOptionIndex + 1)) {
+                  this.selectHighlightedOption(
+                    event.target,
+                    menuOptions,
+                    highlightedOptionIndex + 1
+                  );
+                }
+              }
+            } else {
+              this.setHighlightedOption(0);
+              this.menuOptionId.emit({
+                optionId: getOptionId(0),
+              });
+
+              if (this.isMultiSelect && event.shiftKey) {
+                // If down arrow is pressed for first time after shift is held
+                if (this.shiftPressed) {
+                  this.deselectSelectedOptions([highlightedOptionIndex, 0]);
+                  this.shiftPressed = false;
+                }
+
+                if (!this.isOptionSelected(0)) {
+                  this.selectHighlightedOption(event.target, menuOptions, 0);
+                }
+              }
+            }
           }
+
           this.preventIncorrectTabOrder = false;
           this.focusFromSearchKeypress = false;
           break;
@@ -680,6 +760,7 @@ export class Menu {
           }
           break;
         case "Shift":
+          this.shiftPressed = true;
         case "Tab":
           if (this.isSearchBar) {
             this.keyboardNav = true;
