@@ -558,8 +558,10 @@ export class Menu {
 
   // Check if option is selected based on the index of the option
   private isOptionSelected = (index: number) => {
+    const menuOptions = this.getMenuOptions();
+
     return this.value
-      ? this.value.includes(this.options[index][this.valueField])
+      ? this.value.includes(menuOptions[index][this.valueField])
       : false;
   };
 
@@ -664,19 +666,44 @@ export class Menu {
             // Prevents it resetting to the bottom of the menu when user switches to using keyboard
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
-          } else if (
-            highlightedOptionIndex <= 0 ||
-            highlightedOptionIndex > menuOptions.length + 1
-          ) {
-            this.setHighlightedOption(menuOptions.length - 1);
-            this.menuOptionId.emit({
-              optionId: getOptionId(menuOptions.length - 1),
-            });
           } else {
-            this.setHighlightedOption(highlightedOptionIndex - 1);
-            this.menuOptionId.emit({
-              optionId: getOptionId(highlightedOptionIndex - 1),
-            });
+            this.handleShiftKeyDown(event, highlightedOptionIndex, menuOptions);
+
+            if (
+              highlightedOptionIndex <= 0 ||
+              highlightedOptionIndex > menuOptions.length + 1
+            ) {
+              this.setHighlightedOption(menuOptions.length - 1);
+              this.menuOptionId.emit({
+                optionId: getOptionId(menuOptions.length - 1),
+              });
+
+              this.handleShiftKeyDown(
+                event,
+                menuOptions.length - 1,
+                menuOptions
+              );
+            } else {
+              this.setHighlightedOption(highlightedOptionIndex - 1);
+              this.menuOptionId.emit({
+                optionId: getOptionId(highlightedOptionIndex - 1),
+              });
+
+              this.handleShiftKeyDown(
+                event,
+                highlightedOptionIndex - 1,
+                menuOptions
+              );
+            }
+
+            // Deselect currently selected options if arrow was pressed for first time after shift is held
+            if (this.isMultiSelect && this.shiftPressed) {
+              this.deselectSelectedOptions([
+                highlightedOptionIndex,
+                this.getOptionHighlightedIndex(),
+              ]);
+              this.shiftPressed = false;
+            }
           }
           this.preventIncorrectTabOrder = false;
           this.focusFromSearchKeypress = false;
