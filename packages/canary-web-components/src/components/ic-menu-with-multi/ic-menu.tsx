@@ -47,12 +47,14 @@ export class Menu {
   private isMultiSelect: boolean = false;
   private isSearchBar: boolean = false;
   private isSearchableSelect: boolean = false;
+  private lastOptionSelected: number = null; // Index of last option selected
   private menu: HTMLUListElement;
   private multiOptionClicked: string = null;
   private popperInstance: PopperInstance;
   private preventClickOpen: boolean = false; // Prevents menu re-opening immediately after it is closed on blur when clicking input.
   private preventMenuFocus: boolean = false; // (When multiple) ensures focus moves straight to select all button from menu.
   private selectAllButton: HTMLIcButtonElement;
+  private shiftPressed: boolean = false;
   private ungroupedOptions: IcMenuOption[] = [];
 
   @Element() el: HTMLIcMenuWithMultiElement;
@@ -63,7 +65,6 @@ export class Menu {
   @State() optionHighlighted: string;
   @State() preventIncorrectTabOrder: boolean = false;
   @State() menuOptions: IcMenuOption[];
-  @State() shiftPressed: boolean = false;
 
   /**
    * Determines whether options manually set as values (by pressing 'Enter') when they receive focus using keyboard navigation.
@@ -165,6 +166,24 @@ export class Menu {
    * The value of the currently selected option - or array of values (if multiple options allowed).
    */
   @Prop({ mutable: true }) value!: string | string[];
+
+  @Watch("value")
+  watchValueHandler(newValueArray: string[], oldValueArray: string[]): void {
+    if (this.isMultiSelect) {
+      const menuOptions = this.getMenuOptions();
+
+      // If value changes due to an option being selected (rather than a deselection),
+      // set lastOptionSelected to the index of that option
+      if (!oldValueArray || newValueArray.length > oldValueArray.length) {
+        const lastOptionSelectedValue = oldValueArray ? newValueArray.filter(value => !oldValueArray.includes(value))[0] : newValueArray[0];
+        this.lastOptionSelected = menuOptions.findIndex(
+          (option) => option[this.valueField] === lastOptionSelectedValue
+        );
+      } else {
+        this.lastOptionSelected = null;
+      }
+    }
+  }
 
   /**
    * The custom name for the value field for IcMenuOption.
@@ -568,6 +587,7 @@ export class Menu {
   // Deselect currently selected options when shift pressed
   // If the two first new options being selected were already selected, don't re-add to selection i.e. don't emit icOptionSelect again
   private deselectSelectedOptions = (optionsToKeepSelected: number[]) => {
+    console.log("deselect selected options");
     const menuOptions = this.getMenuOptions();
 
     if (this.value) {
@@ -623,7 +643,8 @@ export class Menu {
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
           } else {
-            this.handleShiftKeyDown(event, highlightedOptionIndex, menuOptions);
+            console.log("shift pressed" + this.shiftPressed);
+            this.handleSingleShiftSelect(event, highlightedOptionIndex, menuOptions);
 
             if (highlightedOptionIndex < menuOptions.length - 1) {
               this.setHighlightedOption(highlightedOptionIndex + 1);
@@ -631,7 +652,7 @@ export class Menu {
                 optionId: getOptionId(highlightedOptionIndex + 1),
               });
 
-              this.handleShiftKeyDown(
+              this.handleSingleShiftSelect(
                 event,
                 highlightedOptionIndex + 1,
                 menuOptions
@@ -642,7 +663,7 @@ export class Menu {
                 optionId: getOptionId(0),
               });
 
-              this.handleShiftKeyDown(event, 0, menuOptions);
+              this.handleSingleShiftSelect(event, 0, menuOptions);
             }
 
             // Deselect currently selected options if arrow was pressed for first time after shift is held
@@ -667,7 +688,7 @@ export class Menu {
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
           } else {
-            this.handleShiftKeyDown(event, highlightedOptionIndex, menuOptions);
+            this.handleSingleShiftSelect(event, highlightedOptionIndex, menuOptions);
 
             if (
               highlightedOptionIndex <= 0 ||
@@ -678,7 +699,7 @@ export class Menu {
                 optionId: getOptionId(menuOptions.length - 1),
               });
 
-              this.handleShiftKeyDown(
+              this.handleSingleShiftSelect(
                 event,
                 menuOptions.length - 1,
                 menuOptions
@@ -689,7 +710,7 @@ export class Menu {
                 optionId: getOptionId(highlightedOptionIndex - 1),
               });
 
-              this.handleShiftKeyDown(
+              this.handleSingleShiftSelect(
                 event,
                 highlightedOptionIndex - 1,
                 menuOptions
@@ -737,6 +758,7 @@ export class Menu {
           break;
         case "Enter":
           event.preventDefault();
+          this.handleMultipleShiftSelect(event, highlightedOptionIndex);
           this.selectHighlightedOption(
             event.target,
             menuOptions,
@@ -916,7 +938,9 @@ export class Menu {
     event.preventDefault();
   };
 
-  private handleShiftKeyDown = (
+  // When shift key is being used to select contiguous options one by one on a multi-select
+  // I.e. holding shift and pressing up and down arrow keys
+  private handleSingleShiftSelect = (
     event: KeyboardEvent,
     optionToSelectIndex: number,
     options: IcMenuOption[]
@@ -929,6 +953,31 @@ export class Menu {
       this.selectHighlightedOption(event.target, options, optionToSelectIndex);
     }
   };
+
+  // When shift key is being used to select multiple options at once on a multi-select
+  // I.e. holding shift before selecting the next option
+  private handleMultipleShiftSelect = (event: KeyboardEvent, lastOptionInSelection: number) => {
+    console.log("this.lastOptionSelected " + this.lastOptionSelected);
+    console.log("lastOptionInSelection " + lastOptionInSelection);
+
+    this.shiftPressed = false;
+
+    if (event.shiftKey && this.lastOptionSelected) {
+      const optionsToSelect = [];
+
+      if (this.lastOptionSelected < lastOptionInSelection) {
+        for (let i = this.lastOptionSelected; i < lastOptionInSelection; i++) {
+          optionsToSelect.push(i);
+        }
+      } else {
+        for (let i = this.lastOptionSelected; i > lastOptionInSelection; i--) {
+          optionsToSelect.push(i);
+        }
+      }
+
+      optionsToSelect.forEach(optionIndex => !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex));
+    }
+  }
 
   private emitSelectAll = () => {
     // Select all if there is either no value or not all options are selected
