@@ -167,23 +167,24 @@ export class Menu {
    */
   @Prop({ mutable: true }) value!: string | string[];
 
-  @Watch("value")
-  watchValueHandler(newValueArray: string[], oldValueArray: string[]): void {
-    if (this.isMultiSelect) {
-      const menuOptions = this.getMenuOptions();
+  // @Watch("value")
+  // watchValueHandler(newValueArray: string[], oldValueArray: string[]): void {
+  //   if (this.isMultiSelect) {
+  //     const menuOptions = this.getMenuOptions();
 
-      // If value changes due to an option being selected (rather than a deselection),
-      // set lastOptionSelected to the index of that option
-      if (!oldValueArray || newValueArray.length > oldValueArray.length) {
-        const lastOptionSelectedValue = oldValueArray ? newValueArray.filter(value => !oldValueArray.includes(value))[0] : newValueArray[0];
-        this.lastOptionSelected = menuOptions.findIndex(
-          (option) => option[this.valueField] === lastOptionSelectedValue
-        );
-      } else {
-        this.lastOptionSelected = null;
-      }
-    }
-  }
+  //     // If value changes due to an option being selected (rather than a deselection),
+  //     // set lastOptionSelected to the index of that option
+  //     if (!oldValueArray || newValueArray.length > oldValueArray.length) {
+  //       const lastOptionSelectedValue = oldValueArray ? newValueArray.filter(value => !oldValueArray.includes(value))[0] : newValueArray[0];
+  //       this.lastOptionSelected = menuOptions.findIndex(
+  //         (option) => option[this.valueField] === lastOptionSelectedValue
+  //       );
+  //       console.log(this.lastOptionSelected);
+  //     } else {
+  //       this.lastOptionSelected = null;
+  //     }
+  //   }
+  // }
 
   /**
    * The custom name for the value field for IcMenuOption.
@@ -756,15 +757,28 @@ export class Menu {
             }
           }
           break;
-        case "Enter":
-          event.preventDefault();
-          this.handleMultipleShiftSelect(event, highlightedOptionIndex);
-          this.selectHighlightedOption(
-            event.target,
-            menuOptions,
-            highlightedOptionIndex
-          );
-          break;
+          case "Enter":
+            event.preventDefault();
+
+            let lastOptionSelected;
+  
+            if (event.shiftKey && this.lastOptionSelected !== null) {
+              this.handleMultipleShiftSelect(highlightedOptionIndex);
+
+              lastOptionSelected = highlightedOptionIndex;
+            } else {
+              this.selectHighlightedOption(
+                event.target,
+                menuOptions,
+                highlightedOptionIndex
+              );
+
+              lastOptionSelected = this.isOptionSelected(highlightedOptionIndex) ? null : highlightedOptionIndex;
+            };
+
+              this.lastOptionSelected = lastOptionSelected;
+            // }
+            break;
         case "Escape":
           if (this.open) {
             event.stopImmediatePropagation();
@@ -956,27 +970,29 @@ export class Menu {
 
   // When shift key is being used to select multiple options at once on a multi-select
   // I.e. holding shift before selecting the next option
-  private handleMultipleShiftSelect = (event: KeyboardEvent, lastOptionInSelection: number) => {
+  private handleMultipleShiftSelect = (lastOptionInSelection: number) => {
     console.log("this.lastOptionSelected " + this.lastOptionSelected);
-    console.log("lastOptionInSelection " + lastOptionInSelection);
 
     this.shiftPressed = false;
 
-    if (event.shiftKey && this.lastOptionSelected) {
+    // if (event.shiftKey && this.lastOptionSelected) {
       const optionsToSelect = [];
 
       if (this.lastOptionSelected < lastOptionInSelection) {
-        for (let i = this.lastOptionSelected; i < lastOptionInSelection; i++) {
+        for (let i = this.lastOptionSelected; i < lastOptionInSelection + 1; i++) {
           optionsToSelect.push(i);
         }
       } else {
-        for (let i = this.lastOptionSelected; i > lastOptionInSelection; i--) {
+        for (let i = this.lastOptionSelected; i > lastOptionInSelection - 1; i--) {
           optionsToSelect.push(i);
         }
       }
 
+      console.log(optionsToSelect);
+
       optionsToSelect.forEach(optionIndex => !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex));
-    }
+      this.deselectSelectedOptions(optionsToSelect);
+    // }
   }
 
   private emitSelectAll = () => {
