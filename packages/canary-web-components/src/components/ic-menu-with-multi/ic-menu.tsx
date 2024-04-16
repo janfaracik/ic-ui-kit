@@ -628,11 +628,7 @@ export class Menu {
 
     // Space press should be equivalent to Enter when multi-select
     if (event.key === " " && this.isMultiSelect) {
-      this.selectHighlightedOption(
-        event.target,
-        menuOptions,
-        highlightedOptionIndex
-      );
+      this.handleOptionSelect(event, highlightedOptionIndex);
     } else {
       switch (event.key) {
         case "ArrowDown":
@@ -645,7 +641,11 @@ export class Menu {
             this.multiOptionClicked = null;
           } else {
             console.log("shift pressed" + this.shiftPressed);
-            this.handleSingleShiftSelect(event, highlightedOptionIndex, menuOptions);
+            this.handleSingleShiftSelect(
+              event,
+              highlightedOptionIndex,
+              menuOptions
+            );
 
             if (highlightedOptionIndex < menuOptions.length - 1) {
               this.setHighlightedOption(highlightedOptionIndex + 1);
@@ -689,7 +689,11 @@ export class Menu {
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
           } else {
-            this.handleSingleShiftSelect(event, highlightedOptionIndex, menuOptions);
+            this.handleSingleShiftSelect(
+              event,
+              highlightedOptionIndex,
+              menuOptions
+            );
 
             if (
               highlightedOptionIndex <= 0 ||
@@ -757,28 +761,12 @@ export class Menu {
             }
           }
           break;
-          case "Enter":
-            event.preventDefault();
+        case "Enter":
+          event.preventDefault();
 
-            let lastOptionSelected;
-  
-            if (event.shiftKey && this.lastOptionSelected !== null) {
-              this.handleMultipleShiftSelect(highlightedOptionIndex);
-
-              lastOptionSelected = highlightedOptionIndex;
-            } else {
-              this.selectHighlightedOption(
-                event.target,
-                menuOptions,
-                highlightedOptionIndex
-              );
-
-              lastOptionSelected = this.isOptionSelected(highlightedOptionIndex) ? null : highlightedOptionIndex;
-            };
-
-              this.lastOptionSelected = lastOptionSelected;
-            // }
-            break;
+          this.handleOptionSelect(event, highlightedOptionIndex);
+          // }
+          break;
         case "Escape":
           if (this.open) {
             event.stopImmediatePropagation();
@@ -862,16 +850,23 @@ export class Menu {
     }
   };
 
-  private handleOptionClick = (event: Event): void => {
+  private handleOptionClick = (event: MouseEvent): void => {
     const { value, label } = (event.target as HTMLLIElement).dataset;
-    this.menuOptionSelect.emit({ value, label });
-    this.optionHighlighted = undefined;
 
     if (this.isMultiSelect) {
+      const menuOptions = this.getMenuOptions();
+      const selectedOptionIndex = menuOptions.findIndex(
+        (option) => option.value === value
+      );
+
+      this.handleOptionSelect(event, selectedOptionIndex, false);
       this.multiOptionClicked = value;
     } else {
+      this.menuOptionSelect.emit({ value, label });
       this.handleMenuChange(false);
     }
+
+    this.optionHighlighted = undefined;
   };
 
   private handleRetry = (): void => {
@@ -976,24 +971,58 @@ export class Menu {
     this.shiftPressed = false;
 
     // if (event.shiftKey && this.lastOptionSelected) {
-      const optionsToSelect = [];
+    const optionsToSelect = [];
 
-      if (this.lastOptionSelected < lastOptionInSelection) {
-        for (let i = this.lastOptionSelected; i < lastOptionInSelection + 1; i++) {
-          optionsToSelect.push(i);
-        }
-      } else {
-        for (let i = this.lastOptionSelected; i > lastOptionInSelection - 1; i--) {
-          optionsToSelect.push(i);
-        }
+    if (this.lastOptionSelected < lastOptionInSelection) {
+      for (
+        let i = this.lastOptionSelected;
+        i < lastOptionInSelection + 1;
+        i++
+      ) {
+        optionsToSelect.push(i);
       }
+    } else {
+      for (
+        let i = this.lastOptionSelected;
+        i > lastOptionInSelection - 1;
+        i--
+      ) {
+        optionsToSelect.push(i);
+      }
+    }
 
-      console.log(optionsToSelect);
+    console.log(optionsToSelect);
 
-      optionsToSelect.forEach(optionIndex => !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex));
-      this.deselectSelectedOptions(optionsToSelect);
+    optionsToSelect.forEach(
+      (optionIndex) =>
+        !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex)
+    );
+    this.deselectSelectedOptions(optionsToSelect);
     // }
-  }
+  };
+
+  private handleOptionSelect = (
+    event: KeyboardEvent | MouseEvent,
+    optionIndex: number,
+    emitOptionSelect?: boolean
+  ) => {
+    const menuOptions = this.getMenuOptions();
+    let lastOptionSelected;
+
+    if (event.shiftKey && this.lastOptionSelected !== null) {
+      this.handleMultipleShiftSelect(optionIndex);
+
+      lastOptionSelected = optionIndex;
+    } else if (!emitOptionSelect) {
+      this.selectHighlightedOption(event.target, menuOptions, optionIndex);
+
+      lastOptionSelected = this.isOptionSelected(optionIndex)
+        ? null
+        : optionIndex;
+    }
+
+    this.lastOptionSelected = lastOptionSelected;
+  };
 
   private emitSelectAll = () => {
     // Select all if there is either no value or not all options are selected
