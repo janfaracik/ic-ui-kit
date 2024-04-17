@@ -48,6 +48,7 @@ export class Menu {
   private isSearchBar: boolean = false;
   private isSearchableSelect: boolean = false;
   private lastOptionSelected: number = null; // Index of last option selected
+  private lastOptionFocused: number = null; // Index of last option focused
   private menu: HTMLUListElement;
   private multiOptionClicked: string = null;
   private popperInstance: PopperInstance;
@@ -676,7 +677,7 @@ export class Menu {
               this.shiftPressed = false;
             }
           }
-
+          // this.lastOptionFocused = this.getOptionHighlightedIndex();
           this.preventIncorrectTabOrder = false;
           this.focusFromSearchKeypress = false;
           break;
@@ -731,6 +732,8 @@ export class Menu {
               this.shiftPressed = false;
             }
           }
+
+          // this.lastOptionFocused = this.getOptionHighlightedIndex();
           this.preventIncorrectTabOrder = false;
           this.focusFromSearchKeypress = false;
           break;
@@ -742,6 +745,10 @@ export class Menu {
           this.menuOptionId.emit({
             optionId: getOptionId(0),
           });
+
+          if (event.shiftKey && event.ctrlKey) {
+            console.log("Ctrl + Shift + Home");
+          }
           break;
         case "End":
           this.keyboardNav = true;
@@ -991,8 +998,6 @@ export class Menu {
       }
     }
 
-    console.log(optionsToSelect);
-
     optionsToSelect.forEach(
       (optionIndex) =>
         !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex)
@@ -1007,21 +1012,21 @@ export class Menu {
     emitOptionSelect?: boolean
   ) => {
     const menuOptions = this.getMenuOptions();
-    let lastOptionSelected;
+    // let lastOptionSelected;
 
     if (event.shiftKey && this.lastOptionSelected !== null) {
       this.handleMultipleShiftSelect(optionIndex);
 
-      lastOptionSelected = optionIndex;
+      // lastOptionSelected = optionIndex;
     } else if (!emitOptionSelect) {
       this.selectHighlightedOption(event.target, menuOptions, optionIndex);
 
-      lastOptionSelected = this.isOptionSelected(optionIndex)
-        ? null
-        : optionIndex;
+      // lastOptionSelected = this.isOptionSelected(optionIndex)
+      //   ? null
+      //   : optionIndex;
     }
 
-    this.lastOptionSelected = lastOptionSelected;
+    this.lastOptionSelected = optionIndex;
   };
 
   private emitSelectAll = () => {
