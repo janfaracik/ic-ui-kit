@@ -168,25 +168,6 @@ export class Menu {
    */
   @Prop({ mutable: true }) value!: string | string[];
 
-  // @Watch("value")
-  // watchValueHandler(newValueArray: string[], oldValueArray: string[]): void {
-  //   if (this.isMultiSelect) {
-  //     const menuOptions = this.getMenuOptions();
-
-  //     // If value changes due to an option being selected (rather than a deselection),
-  //     // set lastOptionSelected to the index of that option
-  //     if (!oldValueArray || newValueArray.length > oldValueArray.length) {
-  //       const lastOptionSelectedValue = oldValueArray ? newValueArray.filter(value => !oldValueArray.includes(value))[0] : newValueArray[0];
-  //       this.lastOptionSelected = menuOptions.findIndex(
-  //         (option) => option[this.valueField] === lastOptionSelectedValue
-  //       );
-  //       console.log(this.lastOptionSelected);
-  //     } else {
-  //       this.lastOptionSelected = null;
-  //     }
-  //   }
-  // }
-
   /**
    * The custom name for the value field for IcMenuOption.
    */
@@ -586,8 +567,7 @@ export class Menu {
       : false;
   };
 
-  // Deselect currently selected options when shift pressed
-  // If the two first new options being selected were already selected, don't re-add to selection i.e. don't emit icOptionSelect again
+  // Deselect currently selected options when shift pressed, but keep certain options selected
   private deselectSelectedOptions = (optionsToKeepSelected: number[]) => {
     const menuOptions = this.getMenuOptions();
 
@@ -598,6 +578,7 @@ export class Menu {
         );
       });
 
+      // Call setInputValue (which toggles the selected state) on options that need to be deselected 
       selectedOptionIndexes.forEach(
         (index) =>
           !optionsToKeepSelected.includes(index) && this.setInputValue(index)
@@ -610,9 +591,9 @@ export class Menu {
     const menuOptions = this.getMenuOptions();
 
     // Prevent focus disappearing on currently focused option when Shift / Cmd / Ctrl pressed
+    // (i.e. when user is likely in the middle of executing a keyboard combination to select options)
     if (
-      !event.shiftKey &&
-      !((isMacDevice() && event.metaKey) || event.ctrlKey)
+      !(event.shiftKey || event.metaKey || event.ctrlKey)
     ) {
       this.keyboardNav = false;
     }
@@ -747,7 +728,7 @@ export class Menu {
           });
 
           if (event.shiftKey && event.ctrlKey) {
-            this.handleMultipleShiftSelect(highlightedOptionIndex, startOptionIndex)
+            this.handleMultipleShiftSelect(startOptionIndex);
           }
 
           this.lastOptionFocused = startOptionIndex;
@@ -765,7 +746,7 @@ export class Menu {
           });
 
           if (event.shiftKey && event.ctrlKey) {
-            this.handleMultipleShiftSelect(highlightedOptionIndex, endOptionIndex)
+            this.handleMultipleShiftSelect(endOptionIndex);
           }
 
           this.lastOptionFocused = endOptionIndex;
@@ -801,6 +782,8 @@ export class Menu {
             (!isMacDevice() && event.ctrlKey)
           ) {
             this.emitSelectAll();
+            this.lastOptionFocused = null;
+            this.lastOptionSelected = null;
           }
           break;
         case "Shift":
@@ -946,12 +929,18 @@ export class Menu {
       this.disabledOptionSelected = false;
       event.stopImmediatePropagation();
     }
+
+    if (event.key === "Shift") {
+      this.shiftPressed = false;
+    }
   };
 
   private handleSelectAllClick = () => {
     this.keyboardNav = false;
     this.menu.focus();
     this.emitSelectAll();
+    this.lastOptionFocused = null;
+    this.lastOptionSelected = null;
   };
 
   private handleSelectAllBlur = (event: FocusEvent) => {
@@ -990,32 +979,47 @@ export class Menu {
   };
 
   // When shift key is being used to select multiple options at once on a multi-select
-  // I.e. holding shift before selecting the next option
+  // I.e. holding shift when selecting another option
   private handleMultipleShiftSelect = (
-    firstOptionInSelection: number,
-    lastOptionInSelection: number
+    lastOptionInSelection: number,
+    useFocusForSelection: boolean = false
   ) => {
     this.shiftPressed = false;
 
-    // if (event.shiftKey && this.lastOptionSelected) {
-    const optionsToSelect = [];
+    const firstOptionInSelection =
+      useFocusForSelection && this.lastOptionFocused !== null
+        ? this.lastOptionFocused
+        : this.lastOptionSelected !== null
+        ? this.lastOptionSelected
+        : null;
 
-    if (firstOptionInSelection < lastOptionInSelection) {
-      for (let i = firstOptionInSelection; i < lastOptionInSelection + 1; i++) {
-        optionsToSelect.push(i);
+    if (firstOptionInSelection !== null) {
+      const optionsToSelect = [];
+
+      if (firstOptionInSelection < lastOptionInSelection) {
+        for (
+          let i = firstOptionInSelection;
+          i < lastOptionInSelection + 1;
+          i++
+        ) {
+          optionsToSelect.push(i);
+        }
+      } else {
+        for (
+          let i = firstOptionInSelection;
+          i > lastOptionInSelection - 1;
+          i--
+        ) {
+          optionsToSelect.push(i);
+        }
       }
-    } else {
-      for (let i = firstOptionInSelection; i > lastOptionInSelection - 1; i--) {
-        optionsToSelect.push(i);
-      }
+
+      optionsToSelect.forEach(
+        (optionIndex) =>
+          !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex)
+      );
+      this.deselectSelectedOptions(optionsToSelect);
     }
-
-    optionsToSelect.forEach(
-      (optionIndex) =>
-        !this.isOptionSelected(optionIndex) && this.setInputValue(optionIndex)
-    );
-    this.deselectSelectedOptions(optionsToSelect);
-    // }
   };
 
   private handleOptionSelect = (
@@ -1034,7 +1038,8 @@ export class Menu {
     // const firstOptionInSelection = this.lastOptionSelected !== null ? this.lastOptionSelected : useFocusForSelection && this.lastOptionFocused !== null ? this.lastOptionFocused : null;
 
     if (event.shiftKey && firstOptionInSelection !== null) {
-      this.handleMultipleShiftSelect(firstOptionInSelection, optionIndex);
+      console.log(firstOptionInSelection);
+      this.handleMultipleShiftSelect(optionIndex, useFocusForSelection);
 
       // lastOptionSelected = optionIndex;
     } else if (!emitOptionSelect) {
