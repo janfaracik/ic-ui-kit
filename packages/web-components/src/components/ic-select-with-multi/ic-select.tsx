@@ -10,8 +10,8 @@ import {
   State,
   Watch,
 } from "@stencil/core";
-import { IcOptionSelectEventDetail } from "@ukic/web-components/dist/types/components";
-import { IcMenuOption } from "@ukic/web-components/dist/types/utils/types";
+import { IcOptionSelectEventDetail } from "../ic-menu/ic-menu.types";
+import { IcMenuOption } from "../../utils/types";
 
 import {
   getInputDescribedByText,

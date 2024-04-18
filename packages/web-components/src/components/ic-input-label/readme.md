@@ -27,6 +27,7 @@
  - [ic-checkbox-group](../ic-checkbox-group)
  - [ic-radio-group](../ic-radio-group)
  - [ic-select](../ic-select)
+ - [ic-select-with-multi](../ic-select-with-multi)
  - [ic-switch](../ic-switch)
  - [ic-text-field](../ic-text-field)
 
@@ -41,6 +42,7 @@ graph TD;
   ic-checkbox-group --> ic-input-label
   ic-radio-group --> ic-input-label
   ic-select --> ic-input-label
+  ic-select-with-multi --> ic-input-label
   ic-switch --> ic-input-label
   ic-text-field --> ic-input-label
   style ic-input-label fill:#f9f,stroke:#333,stroke-width:4px

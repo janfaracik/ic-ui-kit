@@ -1,9 +1,9 @@
 import { newSpecPage } from "@stencil/core/testing";
 import { Menu } from "../../ic-menu";
-import { IcInputComponentContainer } from "@ukic/web-components/dist/components/ic-input-component-container";
-import { testKeyboardEvent as keyboardEvent } from "@ukic/web-components/dist/types/testspec.setup";
+import { InputComponentContainer } from "../../../ic-input-component-container/ic-input-component-container";
+import { testKeyboardEvent as keyboardEvent } from "../../../../testspec.setup";
 import { h } from "@stencil/core";
-import * as helpers from "@ukic/web-components/dist/types/utils/helpers";
+import * as helpers from "../../../../utils/helpers";
 
 // These tests still use 'ic-select' and not 'ic-select-with-multi'
 // It does not matter as unit tests in the canary branch do not run anyway
@@ -51,9 +51,9 @@ const createMenu = () => {
   const input = window.document.createElement("input");
 
   return newSpecPage({
-    components: [Menu, IcInputComponentContainer],
+    components: [Menu, InputComponentContainer],
     template: () => (
-      <ic-menu
+      <ic-menu-with-multi
         open
         activationType="automatic"
         options={menuOptions}
@@ -63,7 +63,7 @@ const createMenu = () => {
         anchorEl={div}
         value={menuOptions[0].value}
         parentEl={div}
-      ></ic-menu>
+      ></ic-menu-with-multi>
     ),
   });
 };
@@ -390,9 +390,9 @@ describe("ic-menu in isolation", () => {
     searchBar.setFocus = jest.fn();
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={searchMenuOptions}
@@ -402,7 +402,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={searchBar}
           value={searchMenuOptions[0].value}
           parentEl={searchBar}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -495,20 +495,28 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
+    const eventSpy2 = jest.fn();
+    page.root.addEventListener("menuOptionId", eventSpy2);
+
     page.rootInstance.manualSetInputValueKeyboardOpen(
       keyboardEvent("ArrowDown")
     );
 
     await page.waitForChanges();
 
-    expect(page.rootInstance.value).toBe(searchMenuOptions[2].value);
+    expect(eventSpy2).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: expect.objectContaining({
+          optionId: "menu-id-cappucino",
+        }),
+      })
+    );
 
     page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Enter"));
 
     await page.waitForChanges();
 
     expect(page.rootInstance.disabledOptionSelected).toBe(true);
-    expect(page.rootInstance.value).toBe(searchMenuOptions[2].value);
 
     page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Escape"));
 
@@ -598,7 +606,7 @@ describe("ic-menu in isolation", () => {
   });
   it("tests manualSetInputValueKeyboardOpen function when searchable select", async () => {
     const searchableSelect = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
 
@@ -606,9 +614,9 @@ describe("ic-menu in isolation", () => {
     searchableSelect.searchable = true;
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -618,7 +626,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={searchableSelect}
           value={menuOptions[0].value}
           parentEl={searchableSelect}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -634,16 +642,16 @@ describe("ic-menu in isolation", () => {
   });
   it("tests manualSetInputValueKeyboardOpen function when searchbar", async () => {
     const select = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
 
     select.setFocus = jest.fn();
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -653,7 +661,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={select}
           value={menuOptions[0].value}
           parentEl={select}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -669,16 +677,16 @@ describe("ic-menu in isolation", () => {
   });
   it("tests manualSetInputValueKeyboardOpen function when default parameter passed", async () => {
     const select = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
 
     select.setFocus = jest.fn();
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -688,7 +696,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={select}
           value={menuOptions[0].value}
           parentEl={select}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -703,14 +711,14 @@ describe("ic-menu in isolation", () => {
   });
   it("tests manualSetInputValueKeyboardOpen function when multi-select", async () => {
     const multiSelect = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -720,7 +728,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={multiSelect}
           value={menuOptions[0].value}
           parentEl={multiSelect}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -806,6 +814,28 @@ describe("ic-menu in isolation", () => {
 
     expect(page.rootInstance.emitSelectAll).toHaveBeenCalledTimes(2);
 
+    page.rootInstance.optionHighlighted = "doubleespresso";
+    page.rootInstance.multiOptionClicked = null;
+    await page.rootInstance.manualSetInputValueKeyboardOpen({
+      key: "ArrowDown",
+      preventDefault: (): void => null,
+      stopImmediatePropagation: (): void => null,
+      shiftKey: true,
+      target: {
+        id: "key-id",
+      },
+    });
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.selectHighlightedOption).toHaveBeenCalledWith(
+      {
+        id: "key-id",
+      },
+      menuOptions,
+      1
+    );
+
     const eventSpy = jest.fn();
 
     page.rootInstance.selectAllButton.addEventListener("focus", eventSpy);
@@ -823,14 +853,14 @@ describe("ic-menu in isolation", () => {
   });
   it("tests manualSetInputValueKeyboardOpen function when select on enter", async () => {
     const select = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
     select.selectOnEnter = true;
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -840,7 +870,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={select}
           value={menuOptions[0].value}
           parentEl={select}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
     const eventSpy = jest.fn();
@@ -856,16 +886,16 @@ describe("ic-menu in isolation", () => {
   });
   it("tests setInputValue function when default parameter passed", async () => {
     const select = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
 
     select.setFocus = jest.fn();
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -875,7 +905,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={select}
           value={menuOptions[0].value}
           parentEl={select}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -965,7 +995,7 @@ describe("ic-menu in isolation", () => {
 
     const el = page.rootInstance.menu.childNodes[1];
 
-    const event = { target: el };
+    const event = { target: el, shiftKey: false };
 
     await page.waitForChanges();
 
@@ -983,6 +1013,17 @@ describe("ic-menu in isolation", () => {
     );
 
     page.rootInstance.isMultiSelect = true;
+
+    await page.waitForChanges();
+
+    await page.rootInstance.handleOptionClick(event);
+
+    expect(page.rootInstance.multiOptionClicked).toBe("doubleespresso");
+
+    page.rootInstance.value = ["espresso", "flatwhite", "cappuccino"];
+    page.rootInstance.isMultiSelect = true;
+    page.rootInstance.multiOptionClicked = null;
+    event.shiftKey = true;
 
     await page.waitForChanges();
 
@@ -1256,15 +1297,24 @@ describe("ic-menu in isolation", () => {
     await page.waitForChanges();
 
     expect(page.rootInstance.disabledOptionSelected).toBe(false);
+
+    key = keyboardEvent("Shift");
+    await page.waitForChanges();
+
+    page.rootInstance.handleMenuKeyUp(key);
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.shiftPressed).toBe(false);
   });
   it("tests connectedCallback function", async () => {
     const searchBar = window.document.createElement(IcSearchBar);
     const input = window.document.createElement("input");
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -1274,7 +1324,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={searchBar}
           value={menuOptions[0].value}
           parentEl={searchBar as HTMLIcSearchBarElement}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -1303,9 +1353,9 @@ describe("ic-menu in isolation", () => {
     searchBar.disableFilter = true;
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -1315,7 +1365,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={searchBar}
           value={menuOptions[0].value}
           parentEl={searchBar}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -1329,7 +1379,7 @@ describe("ic-menu in isolation", () => {
   });
   it("tests getParentEl function", async () => {
     const select = window.document.createElement(
-      "ic-select"
+      "ic-select-with-multi"
     ) as HTMLIcSelectElement;
     select.searchable = true;
     select.setAttribute("searchable", "true");
@@ -1439,14 +1489,14 @@ describe("ic-menu in isolation", () => {
   });
   it("tests handleSelectAllBlur function", async () => {
     const multiSelect = window.document.createElement(
-      "IC-SELECT"
+      "IC-SELECT-WITH-MULTI"
     ) as HTMLIcSelectElement;
     const input = window.document.createElement("input");
 
     const page = await newSpecPage({
-      components: [Menu, IcInputComponentContainer],
+      components: [Menu, InputComponentContainer],
       template: () => (
-        <ic-menu
+        <ic-menu-with-multi
           open
           activationType="automatic"
           options={menuOptions}
@@ -1456,7 +1506,7 @@ describe("ic-menu in isolation", () => {
           anchorEl={multiSelect}
           value={menuOptions[0].value}
           parentEl={multiSelect}
-        ></ic-menu>
+        ></ic-menu-with-multi>
       ),
     });
 
@@ -1555,5 +1605,269 @@ describe("ic-menu in isolation", () => {
     await page.rootInstance.handleSelectAllMouseDown(event);
 
     expect(eventSpy).toHaveBeenCalled();
+  });
+  it("tests deselection of options when pressing ArrowDown after Shift", async () => {
+    const multiSelect = window.document.createElement(
+      "IC-SELECT-WITH-MULTI"
+    ) as HTMLIcSelectElement;
+    const input = window.document.createElement("input");
+
+    const page = await newSpecPage({
+      components: [Menu, InputComponentContainer],
+      template: () => (
+        <ic-menu-with-multi
+          open
+          activationType="automatic"
+          options={menuOptions}
+          menuId="menu-id"
+          inputLabel="input-label"
+          inputEl={input}
+          anchorEl={multiSelect}
+          value={menuOptions[0].value}
+          parentEl={multiSelect}
+        ></ic-menu-with-multi>
+      ),
+    });
+
+    page.rootInstance.isMultiSelect = true;
+
+    jest
+      .spyOn(page.rootInstance, "deselectSelectedOptions")
+      .mockImplementation();
+
+    page.rootInstance.value = [
+      "espresso",
+      "doubleespresso",
+      "flatwhite",
+      "cappuccino",
+      "americano",
+      "ameno",
+      "green",
+      "acano",
+      "mocha",
+    ];
+
+    await page.waitForChanges();
+
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Shift")
+    );
+
+    await page.waitForChanges();
+
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.deselectSelectedOptions).toHaveBeenCalledWith([
+      -1, 0,
+    ]);
+  });
+  it("tests deselection of options when pressing ArrowUp after Shift", async () => {
+    const multiSelect = window.document.createElement(
+      "IC-SELECT-WITH-MULTI"
+    ) as HTMLIcSelectElement;
+    const input = window.document.createElement("input");
+
+    const page = await newSpecPage({
+      components: [Menu, InputComponentContainer],
+      template: () => (
+        <ic-menu-with-multi
+          open
+          activationType="automatic"
+          options={menuOptions}
+          menuId="menu-id"
+          inputLabel="input-label"
+          inputEl={input}
+          anchorEl={multiSelect}
+          value={menuOptions[0].value}
+          parentEl={multiSelect}
+        ></ic-menu-with-multi>
+      ),
+    });
+
+    page.rootInstance.isMultiSelect = true;
+
+    jest
+      .spyOn(page.rootInstance, "deselectSelectedOptions")
+      .mockImplementation();
+
+    page.rootInstance.value = [
+      "espresso",
+      "doubleespresso",
+      "flatwhite",
+      "cappuccino",
+      "americano",
+      "ameno",
+      "green",
+      "acano",
+      "mocha",
+    ];
+
+    await page.waitForChanges();
+
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Shift")
+    );
+
+    await page.waitForChanges();
+
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowUp")
+    );
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.deselectSelectedOptions).toHaveBeenCalledWith([
+      -1, 8,
+    ]);
+  });
+  it("tests selection of options when pressing Home or End with Shift & Ctrl", async () => {
+    const multiSelect = window.document.createElement(
+      "IC-SELECT-WITH-MULTI"
+    ) as HTMLIcSelectElement;
+    const input = window.document.createElement("input");
+
+    const page = await newSpecPage({
+      components: [Menu, InputComponentContainer],
+      template: () => (
+        <ic-menu-with-multi
+          open
+          activationType="automatic"
+          options={menuOptions}
+          menuId="menu-id"
+          inputLabel="input-label"
+          inputEl={input}
+          anchorEl={multiSelect}
+          value={menuOptions[0].value}
+          parentEl={multiSelect}
+        ></ic-menu-with-multi>
+      ),
+    });
+
+    page.rootInstance.isMultiSelect = true;
+
+    jest
+      .spyOn(page.rootInstance, "handleMultipleShiftSelect")
+      .mockImplementation();
+
+    page.rootInstance.value = [
+      "espresso",
+      "doubleespresso",
+      "flatwhite",
+      "cappuccino",
+      "americano",
+      "ameno",
+      "green",
+      "acano",
+      "mocha",
+    ];
+
+    await page.waitForChanges();
+
+    await page.rootInstance.manualSetInputValueKeyboardOpen({
+      key: "End",
+      preventDefault: (): void => null,
+      stopImmediatePropagation: (): void => null,
+      ctrlKey: true,
+      shiftKey: true,
+      target: {
+        id: "key-id",
+      },
+    });
+
+    expect(page.rootInstance.handleMultipleShiftSelect).toHaveBeenCalledWith(8);
+
+    await page.rootInstance.manualSetInputValueKeyboardOpen({
+      key: "Home",
+      preventDefault: (): void => null,
+      stopImmediatePropagation: (): void => null,
+      ctrlKey: true,
+      shiftKey: true,
+      target: {
+        id: "key-id",
+      },
+    });
+
+    expect(page.rootInstance.handleMultipleShiftSelect).toHaveBeenCalledWith(0);
+  });
+  it("tests isOptionSelected", async () => {
+    const multiSelect = window.document.createElement(
+      "IC-SELECT-WITH-MULTI"
+    ) as HTMLIcSelectElement;
+    const input = window.document.createElement("input");
+
+    const page = await newSpecPage({
+      components: [Menu, InputComponentContainer],
+      template: () => (
+        <ic-menu-with-multi
+          open
+          activationType="automatic"
+          options={menuOptions}
+          menuId="menu-id"
+          inputLabel="input-label"
+          inputEl={input}
+          anchorEl={multiSelect}
+          value={menuOptions[0].value}
+          parentEl={multiSelect}
+        ></ic-menu-with-multi>
+      ),
+    });
+
+    page.rootInstance.value = ["espresso", "doubleespresso"];
+
+    await page.waitForChanges();
+
+    let isSelected = await page.rootInstance.isOptionSelected([1]);
+    expect(isSelected).toBe(true);
+
+    isSelected = await page.rootInstance.isOptionSelected([3]);
+    expect(isSelected).toBe(false);
+
+    page.rootInstance.value = "";
+    await page.waitForChanges();
+
+    isSelected = await page.rootInstance.isOptionSelected([0]);
+    expect(isSelected).toBe(false);
+  });
+  it("tests handleMultipleShiftSelect with optional params using default values", async () => {
+    const multiSelect = window.document.createElement(
+      "IC-SELECT-WITH-MULTI"
+    ) as HTMLIcSelectElement;
+    const input = window.document.createElement("input");
+
+    const page = await newSpecPage({
+      components: [Menu, InputComponentContainer],
+      template: () => (
+        <ic-menu-with-multi
+          open
+          activationType="automatic"
+          options={menuOptions}
+          menuId="menu-id"
+          inputLabel="input-label"
+          inputEl={input}
+          anchorEl={multiSelect}
+          value={menuOptions[0].value}
+          parentEl={multiSelect}
+        ></ic-menu-with-multi>
+      ),
+    });
+
+    page.rootInstance.value = ["espresso", "doubleespresso", "flatwhite"];
+
+    jest
+      .spyOn(page.rootInstance, "deselectSelectedOptions")
+      .mockImplementation();
+    page.rootInstance.lastOptionSelected = 1;
+    await page.waitForChanges();
+    page.rootInstance.handleMultipleShiftSelect(3);
+
+    await page.waitForChanges();
+
+    expect(page.rootInstance.deselectSelectedOptions).toHaveBeenCalledWith([
+      1, 2, 3,
+    ]);
   });
 });

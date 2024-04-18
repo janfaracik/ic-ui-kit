@@ -671,3 +671,27 @@ export async function waitForHydration(): Promise<boolean> {
 
   return false;
 }
+
+/**
+ * Gets count of options where only group title "parent" options have been removed.
+ * Disabled options are included in the count.
+ * @param options - array of options
+ * @returns number of options not including group titles
+ */
+export const getOptionsWithoutGroupTitlesCount = (
+  options: IcMenuOption[]
+): number => {
+  const optionsWithoutGroupTitles: IcMenuOption[] = [];
+
+  if (options.length > 0 && options.map) {
+    options.map((option) => {
+      if (option.children) {
+        option.children.map((option) => optionsWithoutGroupTitles.push(option));
+      } else {
+        optionsWithoutGroupTitles.push(option);
+      }
+    });
+  }
+
+  return optionsWithoutGroupTitles.length;
+};

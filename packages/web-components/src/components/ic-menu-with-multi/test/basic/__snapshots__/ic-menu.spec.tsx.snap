@@ -3,7 +3,7 @@
 exports[`ic-menu in isolation should render 1`] = `
 Object {
   "body": <body>
-  <ic-menu class="default no-focus open" data-popper-placement="bottom-start" data-popper-reference-hidden open="" style="position: absolute; left: 0; top: 0; margin: 0; right: auto; bottom: auto; transform: translate(0px, 7px);">
+  <ic-menu-with-multi class="default no-focus open" data-popper-placement="bottom-start" data-popper-reference-hidden open="" style="position: absolute; left: 0; top: 0; margin: 0; right: auto; bottom: auto; transform: translate(0px, 7px);">
     <ul aria-label="input-label pop-up" aria-multiselectable="false" class="menu" id="menu-id" role="listbox" tabindex="-1">
       <li aria-disabled="false" aria-label="Espresso" aria-selected="true" class="option" data-label="Espresso" data-value="espresso" id="menu-id-espresso" role="option" tabindex="-1">
         <div class="option-text-container">
@@ -130,7 +130,7 @@ Object {
         </div>
       </li>
     </ul>
-  </ic-menu>
+  </ic-menu-with-multi>
 </body>,
   "build": Object {
     "allRenderFn": true,
@@ -154,6 +154,9 @@ Object {
     "disconnectedCallback": true,
     "element": true,
     "event": true,
+    "experimentalScopedSlotChanges": false,
+    "experimentalSlotFixes": false,
+    "formAssociated": true,
     "hasRenderFn": true,
     "hostListener": true,
     "hostListenerTarget": true,
@@ -178,7 +181,6 @@ Object {
     "method": true,
     "mode": true,
     "observeAttribute": true,
-    "patchPseudoShadowDom": false,
     "profile": true,
     "prop": true,
     "propBoolean": true,
@@ -225,7 +227,7 @@ Object {
 `;
 
 exports[`ic-menu in isolation tests handleSelectAllFocus function 1`] = `
-<ic-menu class="default no-focus open select-all-focused" data-popper-placement="bottom-start" data-popper-reference-hidden open="" style="position: absolute; left: 0; top: 0; margin: 0; right: auto; bottom: auto; transform: translate(0px, 7px);">
+<ic-menu-with-multi class="default no-focus open select-all-focused" data-popper-placement="bottom-start" data-popper-reference-hidden open="" style="position: absolute; left: 0; top: 0; margin: 0; right: auto; bottom: auto; transform: translate(0px, 7px);">
   <ul aria-label="input-label pop-up" aria-multiselectable="false" class="menu" id="menu-id" role="listbox" tabindex="-1">
     <li aria-disabled="false" aria-label="Espresso" aria-selected="true" class="option" data-label="Espresso" data-value="espresso" id="menu-id-espresso" role="option" tabindex="-1">
       <div class="option-text-container">
@@ -352,5 +354,5 @@ exports[`ic-menu in isolation tests handleSelectAllFocus function 1`] = `
       </div>
     </li>
   </ul>
-</ic-menu>
+</ic-menu-with-multi>
 `;

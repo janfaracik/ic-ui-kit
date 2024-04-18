@@ -66,7 +66,7 @@ export class TopNavigation {
   @State() mobileSearchHiddenOnBlur: boolean = false;
   @State() navMenuVisible: boolean = false;
   @State() searchButtonClick: boolean = false;
-  @State() searchValue: string = "";
+  @State() searchValue: string | string[] = "";
 
   /**
    * The alignment of the top navigation content.

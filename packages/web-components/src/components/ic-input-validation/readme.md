@@ -30,6 +30,7 @@
  - [ic-checkbox-group](../ic-checkbox-group)
  - [ic-radio-group](../ic-radio-group)
  - [ic-select](../ic-select)
+ - [ic-select-with-multi](../ic-select-with-multi)
  - [ic-text-field](../ic-text-field)
 
 ### Depends on
@@ -43,6 +44,7 @@ graph TD;
   ic-checkbox-group --> ic-input-validation
   ic-radio-group --> ic-input-validation
   ic-select --> ic-input-validation
+  ic-select-with-multi --> ic-input-validation
   ic-text-field --> ic-input-validation
   style ic-input-validation fill:#f9f,stroke:#333,stroke-width:4px
 ```

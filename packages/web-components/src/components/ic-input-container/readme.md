@@ -18,12 +18,14 @@
 ### Used by
 
  - [ic-select](../ic-select)
+ - [ic-select-with-multi](../ic-select-with-multi)
  - [ic-text-field](../ic-text-field)
 
 ### Graph
 ```mermaid
 graph TD;
   ic-select --> ic-input-container
+  ic-select-with-multi --> ic-input-container
   ic-text-field --> ic-input-container
   style ic-input-container fill:#f9f,stroke:#333,stroke-width:4px
 ```

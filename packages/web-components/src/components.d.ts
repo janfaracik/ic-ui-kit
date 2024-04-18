@@ -1139,6 +1139,79 @@ export namespace Components {
          */
         "variant": IcMenuItemVariants;
     }
+    interface IcMenuWithMulti {
+        /**
+          * Determines whether options manually set as values (by pressing 'Enter') when they receive focus using keyboard navigation.
+         */
+        "activationType"?: IcActivationTypes;
+        /**
+          * The reference to an anchor element the menu will position itself from when rendered.
+         */
+        "anchorEl": HTMLElement;
+        "autoFocusOnSelected": boolean;
+        /**
+          * If `true`, the menu will close when an option is selected.
+         */
+        "closeOnSelect": boolean;
+        /**
+          * If `true`, the menu will fill the width of the container.
+         */
+        "fullWidth": boolean;
+        "handleClickOpen": () => Promise<void>;
+        /**
+          * Used alongside activationType If menu is opened via keyboard navigation (i.e. Enter, ArrowUp or ArrowDown), emit optionSelect custom event.
+          * @param event - keyboard event
+         */
+        "handleKeyboardOpen": (event: KeyboardEvent) => Promise<void>;
+        "handleSetFirstOption": () => Promise<void>;
+        "initPopperJs": (anchor: HTMLElement) => Promise<void>;
+        /**
+          * The reference to the input element.
+         */
+        "inputEl": HTMLElement;
+        /**
+          * The label for the input element.
+         */
+        "inputLabel": string;
+        /**
+          * The custom name for the label field for IcMenuOption.
+         */
+        "labelField": string;
+        /**
+          * The ID of the menu.
+         */
+        "menuId": string;
+        /**
+          * If `true`, the menu will be displayed open.
+         */
+        "open": boolean;
+        /**
+          * The possible menu selection options.
+         */
+        "options": IcMenuOption[];
+        "parentEl"?: HTMLElement;
+        /**
+          * Specify the mode search bar uses to search. `navigation` allows for quick lookups of a set of values, `query` allows for more general searches.
+         */
+        "searchMode"?: IcSearchBarSearchModes;
+        "selectOnEnter"?: boolean;
+        /**
+          * The size of the menu.
+         */
+        "size"?: IcSizes;
+        /**
+          * @deprecated This prop should not be used anymore. Set prop `size` to "small" instead.
+         */
+        "small"?: boolean;
+        /**
+          * The value of the currently selected option - or array of values (if multiple options allowed).
+         */
+        "value": string | string[];
+        /**
+          * The custom name for the value field for IcMenuOption.
+         */
+        "valueField": string;
+    }
     interface IcNavigationButton {
         /**
           * If `true`, the user can save the linked URL instead of navigating to it.
@@ -1773,6 +1846,156 @@ export namespace Components {
           * The value of the select, reflected by the value of the currently selected option. For the searchable variant, the value is also reflected by the user input.
          */
         "value"?: string;
+    }
+    interface IcSelectWithMulti {
+        /**
+          * **[DEPRECATED]** This prop should not be used anymore.
+         */
+        "charactersUntilSuggestions"?: number;
+        /**
+          * The amount of time, in milliseconds, to wait to trigger the `icChange` event after each keystroke.
+         */
+        "debounce"?: number;
+        /**
+          * If `true`, the built in filtering will be disabled for a searchable variant. For example, if options will already be filtered from external source.
+         */
+        "disableFilter"?: boolean;
+        /**
+          * If `true`, the disabled state will be set.
+         */
+        "disabled"?: boolean;
+        /**
+          * The text displayed when there are no options in the option list.
+         */
+        "emptyOptionListText": string;
+        /**
+          * The <form> element to associate the select with.
+         */
+        "form"?: string;
+        /**
+          * The URL that processes the information submitted by the select. It overrides the action attribute of the select's form owner. Does nothing if there is no form owner. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formaction"?: string;
+        /**
+          * The way the submitted form data is encoded. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formenctype"?: string;
+        /**
+          * The HTTP method used to submit the form. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formmethod"?: string;
+        /**
+          * If `true`, the form will not be validated when submitted. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formnovalidate"?: boolean;
+        /**
+          * The place to display the response from submitting the form. It overrides the target attribute of the select's form owner. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formtarget"?: string;
+        /**
+          * If `true`, the select element will fill the width of the container. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "fullWidth": boolean;
+        /**
+          * The helper text that will be displayed for additional field guidance.
+         */
+        "helperText"?: string;
+        /**
+          * If `true`, the label will be hidden and the required label value will be applied as an aria-label.
+         */
+        "hideLabel"?: boolean;
+        /**
+          * If `true`, descriptions of options will be included when filtering options in a searchable select. Only applies to built in filtering.
+         */
+        "includeDescriptionsInSearch"?: boolean;
+        /**
+          * If `true`, group titles of grouped options will be included when filtering options in a searchable select. Only applies to built in filtering.
+         */
+        "includeGroupTitlesInSearch"?: boolean;
+        /**
+          * The label for the select.
+         */
+        "label": string;
+        /**
+          * If `true`, the loading state will be triggered when fetching options asynchronously.
+         */
+        "loading"?: boolean;
+        /**
+          * The message displayed when external loading times out.
+         */
+        "loadingErrorLabel"?: string;
+        /**
+          * The message displayed whilst the options are being loaded externally.
+         */
+        "loadingLabel"?: string;
+        /**
+          * If `true`, multiple options can be selected.
+         */
+        "multiple"?: boolean;
+        /**
+          * The name of the control, which is submitted with the form data.
+         */
+        "name"?: string;
+        /**
+          * The possible selection options.
+         */
+        "options"?: IcMenuOption[];
+        /**
+          * The placeholder value to be displayed.
+         */
+        "placeholder"?: string;
+        /**
+          * If `true`, the readonly state will be set.
+         */
+        "readonly"?: boolean;
+        /**
+          * If `true`, the select will require a value.
+         */
+        "required"?: boolean;
+        /**
+          * Whether the search string of the searchable select should match the start of or anywhere in the options. Only applies to built in filtering.
+         */
+        "searchMatchPosition"?: IcSearchMatchPositions;
+        /**
+          * If `true`, a searchable variant of the select will be displayed which can be typed in to filter options.
+         */
+        "searchable"?: boolean;
+        /**
+          * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.
+         */
+        "selectOnEnter"?: boolean;
+        /**
+          * Sets focus on the input box.
+         */
+        "setFocus": () => Promise<void>;
+        /**
+          * If `true`, a button which clears the select input when clicked will be displayed. The button will always appear on the searchable select.
+         */
+        "showClearButton"?: boolean;
+        /**
+          * The size of the select.
+         */
+        "size"?: IcSizes;
+        /**
+          * **[DEPRECATED]** This prop should not be used anymore. Set prop `size` to "small" instead.
+         */
+        "small"?: boolean;
+        /**
+          * If using external filtering, set a timeout for when loading takes too long.
+         */
+        "timeout"?: number;
+        /**
+          * The validation status - e.g. 'error' | 'warning' | 'success'.
+         */
+        "validationStatus"?: IcInformationStatusOrEmpty;
+        /**
+          * The text to display as the validation message.
+         */
+        "validationText"?: string;
+        /**
+          * The value of the select, reflected by the value of the currently selected option. For the searchable variant, the value is also reflected by the user input. For the multi-select variant, the value must be an array of option values.
+         */
+        "value"?: string | string[];
     }
     interface IcSideNavigation {
         /**
@@ -2418,6 +2641,10 @@ export interface IcMenuItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIcMenuItemElement;
 }
+export interface IcMenuWithMultiCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIcMenuWithMultiElement;
+}
 export interface IcNavigationItemCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIcNavigationItemElement;
@@ -2453,6 +2680,10 @@ export interface IcSearchBarCustomEvent<T> extends CustomEvent<T> {
 export interface IcSelectCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLIcSelectElement;
+}
+export interface IcSelectWithMultiCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLIcSelectWithMultiElement;
 }
 export interface IcSideNavigationCustomEvent<T> extends CustomEvent<T> {
     detail: T;
@@ -2821,6 +3052,30 @@ declare global {
         prototype: HTMLIcMenuItemElement;
         new (): HTMLIcMenuItemElement;
     };
+    interface HTMLIcMenuWithMultiElementEventMap {
+        "menuKeyPress": { isNavKey: boolean; key: string };
+        "menuOptionId": IcMenuOptionIdEventDetail;
+        "menuOptionSelect": IcOptionSelectEventDetail;
+        "menuOptionSelectAll": { select: boolean };
+        "menuStateChange": IcMenuChangeEventDetail;
+        "retryButtonClicked": IcValueEventDetail;
+        "timeoutBlur": { ev: FocusEvent };
+        "ungroupedOptionsSet": { options: IcMenuOption[] };
+    }
+    interface HTMLIcMenuWithMultiElement extends Components.IcMenuWithMulti, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIcMenuWithMultiElementEventMap>(type: K, listener: (this: HTMLIcMenuWithMultiElement, ev: IcMenuWithMultiCustomEvent<HTMLIcMenuWithMultiElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIcMenuWithMultiElementEventMap>(type: K, listener: (this: HTMLIcMenuWithMultiElement, ev: IcMenuWithMultiCustomEvent<HTMLIcMenuWithMultiElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIcMenuWithMultiElement: {
+        prototype: HTMLIcMenuWithMultiElement;
+        new (): HTMLIcMenuWithMultiElement;
+    };
     interface HTMLIcNavigationButtonElement extends Components.IcNavigationButton, HTMLStencilElement {
     }
     var HTMLIcNavigationButtonElement: {
@@ -3020,6 +3275,30 @@ declare global {
     var HTMLIcSelectElement: {
         prototype: HTMLIcSelectElement;
         new (): HTMLIcSelectElement;
+    };
+    interface HTMLIcSelectWithMultiElementEventMap {
+        "icBlur": void;
+        "icChange": IcValueEventDetail;
+        "icClear": void;
+        "icFocus": void;
+        "icInput": IcValueEventDetail;
+        "icOptionSelect": IcOptionSelectEventDetail;
+        "icOptionDeselect": IcOptionSelectEventDetail;
+        "icRetryLoad": IcValueEventDetail;
+    }
+    interface HTMLIcSelectWithMultiElement extends Components.IcSelectWithMulti, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLIcSelectWithMultiElementEventMap>(type: K, listener: (this: HTMLIcSelectWithMultiElement, ev: IcSelectWithMultiCustomEvent<HTMLIcSelectWithMultiElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLIcSelectWithMultiElementEventMap>(type: K, listener: (this: HTMLIcSelectWithMultiElement, ev: IcSelectWithMultiCustomEvent<HTMLIcSelectWithMultiElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLIcSelectWithMultiElement: {
+        prototype: HTMLIcSelectWithMultiElement;
+        new (): HTMLIcSelectWithMultiElement;
     };
     interface HTMLIcSideNavigationElementEventMap {
         "sideNavExpanded": IcExpandedDetail;
@@ -3306,6 +3585,7 @@ declare global {
         "ic-menu": HTMLIcMenuElement;
         "ic-menu-group": HTMLIcMenuGroupElement;
         "ic-menu-item": HTMLIcMenuItemElement;
+        "ic-menu-with-multi": HTMLIcMenuWithMultiElement;
         "ic-navigation-button": HTMLIcNavigationButtonElement;
         "ic-navigation-group": HTMLIcNavigationGroupElement;
         "ic-navigation-item": HTMLIcNavigationItemElement;
@@ -3319,6 +3599,7 @@ declare global {
         "ic-search-bar": HTMLIcSearchBarElement;
         "ic-section-container": HTMLIcSectionContainerElement;
         "ic-select": HTMLIcSelectElement;
+        "ic-select-with-multi": HTMLIcSelectWithMultiElement;
         "ic-side-navigation": HTMLIcSideNavigationElement;
         "ic-skeleton": HTMLIcSkeletonElement;
         "ic-status-tag": HTMLIcStatusTagElement;
@@ -4427,6 +4708,79 @@ declare namespace LocalJSX {
          */
         "variant"?: IcMenuItemVariants;
     }
+    interface IcMenuWithMulti {
+        /**
+          * Determines whether options manually set as values (by pressing 'Enter') when they receive focus using keyboard navigation.
+         */
+        "activationType"?: IcActivationTypes;
+        /**
+          * The reference to an anchor element the menu will position itself from when rendered.
+         */
+        "anchorEl": HTMLElement;
+        "autoFocusOnSelected"?: boolean;
+        /**
+          * If `true`, the menu will close when an option is selected.
+         */
+        "closeOnSelect"?: boolean;
+        /**
+          * If `true`, the menu will fill the width of the container.
+         */
+        "fullWidth"?: boolean;
+        /**
+          * The reference to the input element.
+         */
+        "inputEl": HTMLElement;
+        /**
+          * The label for the input element.
+         */
+        "inputLabel": string;
+        /**
+          * The custom name for the label field for IcMenuOption.
+         */
+        "labelField"?: string;
+        /**
+          * The ID of the menu.
+         */
+        "menuId": string;
+        "onMenuKeyPress"?: (event: IcMenuWithMultiCustomEvent<{ isNavKey: boolean; key: string }>) => void;
+        "onMenuOptionId"?: (event: IcMenuWithMultiCustomEvent<IcMenuOptionIdEventDetail>) => void;
+        "onMenuOptionSelect"?: (event: IcMenuWithMultiCustomEvent<IcOptionSelectEventDetail>) => void;
+        "onMenuOptionSelectAll"?: (event: IcMenuWithMultiCustomEvent<{ select: boolean }>) => void;
+        "onMenuStateChange"?: (event: IcMenuWithMultiCustomEvent<IcMenuChangeEventDetail>) => void;
+        "onRetryButtonClicked"?: (event: IcMenuWithMultiCustomEvent<IcValueEventDetail>) => void;
+        "onTimeoutBlur"?: (event: IcMenuWithMultiCustomEvent<{ ev: FocusEvent }>) => void;
+        "onUngroupedOptionsSet"?: (event: IcMenuWithMultiCustomEvent<{ options: IcMenuOption[] }>) => void;
+        /**
+          * If `true`, the menu will be displayed open.
+         */
+        "open": boolean;
+        /**
+          * The possible menu selection options.
+         */
+        "options": IcMenuOption[];
+        "parentEl"?: HTMLElement;
+        /**
+          * Specify the mode search bar uses to search. `navigation` allows for quick lookups of a set of values, `query` allows for more general searches.
+         */
+        "searchMode"?: IcSearchBarSearchModes;
+        "selectOnEnter"?: boolean;
+        /**
+          * The size of the menu.
+         */
+        "size"?: IcSizes;
+        /**
+          * @deprecated This prop should not be used anymore. Set prop `size` to "small" instead.
+         */
+        "small"?: boolean;
+        /**
+          * The value of the currently selected option - or array of values (if multiple options allowed).
+         */
+        "value": string | string[];
+        /**
+          * The custom name for the value field for IcMenuOption.
+         */
+        "valueField"?: string;
+    }
     interface IcNavigationButton {
         /**
           * If `true`, the user can save the linked URL instead of navigating to it.
@@ -5141,6 +5495,184 @@ declare namespace LocalJSX {
          */
         "value"?: string;
     }
+    interface IcSelectWithMulti {
+        /**
+          * **[DEPRECATED]** This prop should not be used anymore.
+         */
+        "charactersUntilSuggestions"?: number;
+        /**
+          * The amount of time, in milliseconds, to wait to trigger the `icChange` event after each keystroke.
+         */
+        "debounce"?: number;
+        /**
+          * If `true`, the built in filtering will be disabled for a searchable variant. For example, if options will already be filtered from external source.
+         */
+        "disableFilter"?: boolean;
+        /**
+          * If `true`, the disabled state will be set.
+         */
+        "disabled"?: boolean;
+        /**
+          * The text displayed when there are no options in the option list.
+         */
+        "emptyOptionListText"?: string;
+        /**
+          * The <form> element to associate the select with.
+         */
+        "form"?: string;
+        /**
+          * The URL that processes the information submitted by the select. It overrides the action attribute of the select's form owner. Does nothing if there is no form owner. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formaction"?: string;
+        /**
+          * The way the submitted form data is encoded. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formenctype"?: string;
+        /**
+          * The HTTP method used to submit the form. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formmethod"?: string;
+        /**
+          * If `true`, the form will not be validated when submitted. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formnovalidate"?: boolean;
+        /**
+          * The place to display the response from submitting the form. It overrides the target attribute of the select's form owner. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "formtarget"?: string;
+        /**
+          * If `true`, the select element will fill the width of the container. This prop should only be used with searchable select and will only be applied if searchable is true.
+         */
+        "fullWidth"?: boolean;
+        /**
+          * The helper text that will be displayed for additional field guidance.
+         */
+        "helperText"?: string;
+        /**
+          * If `true`, the label will be hidden and the required label value will be applied as an aria-label.
+         */
+        "hideLabel"?: boolean;
+        /**
+          * If `true`, descriptions of options will be included when filtering options in a searchable select. Only applies to built in filtering.
+         */
+        "includeDescriptionsInSearch"?: boolean;
+        /**
+          * If `true`, group titles of grouped options will be included when filtering options in a searchable select. Only applies to built in filtering.
+         */
+        "includeGroupTitlesInSearch"?: boolean;
+        /**
+          * The label for the select.
+         */
+        "label": string;
+        /**
+          * If `true`, the loading state will be triggered when fetching options asynchronously.
+         */
+        "loading"?: boolean;
+        /**
+          * The message displayed when external loading times out.
+         */
+        "loadingErrorLabel"?: string;
+        /**
+          * The message displayed whilst the options are being loaded externally.
+         */
+        "loadingLabel"?: string;
+        /**
+          * If `true`, multiple options can be selected.
+         */
+        "multiple"?: boolean;
+        /**
+          * The name of the control, which is submitted with the form data.
+         */
+        "name"?: string;
+        /**
+          * Emitted when the select loses focus.
+         */
+        "onIcBlur"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
+        /**
+          * Emitted when the value changes.
+         */
+        "onIcChange"?: (event: IcSelectWithMultiCustomEvent<IcValueEventDetail>) => void;
+        /**
+          * Emitted when the clear button is clicked.
+         */
+        "onIcClear"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
+        /**
+          * Emitted when the select gains focus.
+         */
+        "onIcFocus"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
+        /**
+          * Emitted when a keyboard input occurred.
+         */
+        "onIcInput"?: (event: IcSelectWithMultiCustomEvent<IcValueEventDetail>) => void;
+        /**
+          * Emitted when `multiple` is `true` and an option is deselected.
+         */
+        "onIcOptionDeselect"?: (event: IcSelectWithMultiCustomEvent<IcOptionSelectEventDetail>) => void;
+        /**
+          * Emitted when an option is selected. Selecting an option will also trigger an `icChange/onIcChange` due to the value being updated.
+         */
+        "onIcOptionSelect"?: (event: IcSelectWithMultiCustomEvent<IcOptionSelectEventDetail>) => void;
+        /**
+          * Emitted when the 'retry loading' button is clicked for a searchable variant.
+         */
+        "onIcRetryLoad"?: (event: IcSelectWithMultiCustomEvent<IcValueEventDetail>) => void;
+        /**
+          * The possible selection options.
+         */
+        "options"?: IcMenuOption[];
+        /**
+          * The placeholder value to be displayed.
+         */
+        "placeholder"?: string;
+        /**
+          * If `true`, the readonly state will be set.
+         */
+        "readonly"?: boolean;
+        /**
+          * If `true`, the select will require a value.
+         */
+        "required"?: boolean;
+        /**
+          * Whether the search string of the searchable select should match the start of or anywhere in the options. Only applies to built in filtering.
+         */
+        "searchMatchPosition"?: IcSearchMatchPositions;
+        /**
+          * If `true`, a searchable variant of the select will be displayed which can be typed in to filter options.
+         */
+        "searchable"?: boolean;
+        /**
+          * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.
+         */
+        "selectOnEnter"?: boolean;
+        /**
+          * If `true`, a button which clears the select input when clicked will be displayed. The button will always appear on the searchable select.
+         */
+        "showClearButton"?: boolean;
+        /**
+          * The size of the select.
+         */
+        "size"?: IcSizes;
+        /**
+          * **[DEPRECATED]** This prop should not be used anymore. Set prop `size` to "small" instead.
+         */
+        "small"?: boolean;
+        /**
+          * If using external filtering, set a timeout for when loading takes too long.
+         */
+        "timeout"?: number;
+        /**
+          * The validation status - e.g. 'error' | 'warning' | 'success'.
+         */
+        "validationStatus"?: IcInformationStatusOrEmpty;
+        /**
+          * The text to display as the validation message.
+         */
+        "validationText"?: string;
+        /**
+          * The value of the select, reflected by the value of the currently selected option. For the searchable variant, the value is also reflected by the user input. For the multi-select variant, the value must be an array of option values.
+         */
+        "value"?: string | string[];
+    }
     interface IcSideNavigation {
         /**
           * The app title to be displayed. This is required, unless a slotted app title link is used.
@@ -5822,6 +6354,7 @@ declare namespace LocalJSX {
         "ic-menu": IcMenu;
         "ic-menu-group": IcMenuGroup;
         "ic-menu-item": IcMenuItem;
+        "ic-menu-with-multi": IcMenuWithMulti;
         "ic-navigation-button": IcNavigationButton;
         "ic-navigation-group": IcNavigationGroup;
         "ic-navigation-item": IcNavigationItem;
@@ -5835,6 +6368,7 @@ declare namespace LocalJSX {
         "ic-search-bar": IcSearchBar;
         "ic-section-container": IcSectionContainer;
         "ic-select": IcSelect;
+        "ic-select-with-multi": IcSelectWithMulti;
         "ic-side-navigation": IcSideNavigation;
         "ic-skeleton": IcSkeleton;
         "ic-status-tag": IcStatusTag;
@@ -5892,6 +6426,7 @@ declare module "@stencil/core" {
             "ic-menu": LocalJSX.IcMenu & JSXBase.HTMLAttributes<HTMLIcMenuElement>;
             "ic-menu-group": LocalJSX.IcMenuGroup & JSXBase.HTMLAttributes<HTMLIcMenuGroupElement>;
             "ic-menu-item": LocalJSX.IcMenuItem & JSXBase.HTMLAttributes<HTMLIcMenuItemElement>;
+            "ic-menu-with-multi": LocalJSX.IcMenuWithMulti & JSXBase.HTMLAttributes<HTMLIcMenuWithMultiElement>;
             "ic-navigation-button": LocalJSX.IcNavigationButton & JSXBase.HTMLAttributes<HTMLIcNavigationButtonElement>;
             "ic-navigation-group": LocalJSX.IcNavigationGroup & JSXBase.HTMLAttributes<HTMLIcNavigationGroupElement>;
             "ic-navigation-item": LocalJSX.IcNavigationItem & JSXBase.HTMLAttributes<HTMLIcNavigationItemElement>;
@@ -5905,6 +6440,7 @@ declare module "@stencil/core" {
             "ic-search-bar": LocalJSX.IcSearchBar & JSXBase.HTMLAttributes<HTMLIcSearchBarElement>;
             "ic-section-container": LocalJSX.IcSectionContainer & JSXBase.HTMLAttributes<HTMLIcSectionContainerElement>;
             "ic-select": LocalJSX.IcSelect & JSXBase.HTMLAttributes<HTMLIcSelectElement>;
+            "ic-select-with-multi": LocalJSX.IcSelectWithMulti & JSXBase.HTMLAttributes<HTMLIcSelectWithMultiElement>;
             "ic-side-navigation": LocalJSX.IcSideNavigation & JSXBase.HTMLAttributes<HTMLIcSideNavigationElement>;
             "ic-skeleton": LocalJSX.IcSkeleton & JSXBase.HTMLAttributes<HTMLIcSkeletonElement>;
             "ic-status-tag": LocalJSX.IcStatusTag & JSXBase.HTMLAttributes<HTMLIcStatusTagElement>;

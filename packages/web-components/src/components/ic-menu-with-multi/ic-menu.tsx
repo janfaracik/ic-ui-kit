@@ -12,16 +12,13 @@ import {
   Fragment,
 } from "@stencil/core";
 import { createPopper, Instance as PopperInstance } from "@popperjs/core";
-import {
-  IcActivationTypes,
-  IcMenuOption,
-} from "@ukic/web-components/dist/types/utils/types";
+import { IcActivationTypes, IcMenuOption } from "../../utils/types";
 import {
   IcOptionSelectEventDetail,
   IcMenuChangeEventDetail,
   IcMenuOptionIdEventDetail,
-  IcSearchBarSearchModes,
-} from "@ukic/web-components/dist/types/components";
+} from "../ic-menu/ic-menu.types";
+import { IcSearchBarSearchModes } from "../ic-search-bar/ic-search-bar.types";
 
 import { IcValueEventDetail, IcSizes } from "../../utils/types";
 import Check from "../../assets/check-icon.svg";
@@ -543,8 +540,6 @@ export class Menu {
             this.disabledOptionSelected = true;
           } else {
             this.setInputValue(highlightedOptionIndex);
-            // CHECK THAT REMOVING THIS IS NOT AN ISSUE FOR SINGLE SELECT
-            // this.value = options[highlightedOptionIndex][this.valueField];
           }
         }
       } else {
@@ -578,7 +573,7 @@ export class Menu {
         );
       });
 
-      // Call setInputValue (which toggles the selected state) on options that need to be deselected 
+      // Call setInputValue (which toggles the selected state) on options that need to be deselected
       selectedOptionIndexes.forEach(
         (index) =>
           !optionsToKeepSelected.includes(index) && this.setInputValue(index)
@@ -592,9 +587,7 @@ export class Menu {
 
     // Prevent focus disappearing on currently focused option when Shift / Cmd / Ctrl pressed
     // (i.e. when user is likely in the middle of executing a keyboard combination to select options)
-    if (
-      !(event.shiftKey || event.metaKey || event.ctrlKey)
-    ) {
+    if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
       this.keyboardNav = false;
     }
 
@@ -765,7 +758,6 @@ export class Menu {
           event.preventDefault();
 
           this.handleOptionSelect(event, highlightedOptionIndex);
-          // }
           break;
         case "Escape":
           if (this.open) {
@@ -861,7 +853,7 @@ export class Menu {
         (option) => option.value === value
       );
 
-      this.handleOptionSelect(event, selectedOptionIndex, false, true);
+      this.handleOptionSelect(event, selectedOptionIndex, true);
       this.multiOptionClicked = value;
     } else {
       this.menuOptionSelect.emit({ value, label });
@@ -982,17 +974,15 @@ export class Menu {
   // I.e. holding shift when selecting another option
   private handleMultipleShiftSelect = (
     lastOptionInSelection: number,
-    useFocusForSelection: boolean = false
+    useFocusForSelection: boolean = false,
+    firstOptionSelected: number = null
   ) => {
     this.shiftPressed = false;
 
     const firstOptionInSelection =
-      useFocusForSelection && this.lastOptionFocused !== null
-        ? this.lastOptionFocused
-        : this.lastOptionSelected !== null
-        ? this.lastOptionSelected
-        : null;
-
+      firstOptionSelected === null
+        ? this.getFirstOptionInSelection(useFocusForSelection)
+        : firstOptionSelected;
     if (firstOptionInSelection !== null) {
       const optionsToSelect = [];
 
@@ -1025,33 +1015,33 @@ export class Menu {
   private handleOptionSelect = (
     event: KeyboardEvent | MouseEvent,
     optionIndex: number,
-    emitOptionSelect?: boolean,
     useFocusForSelection: boolean = false
   ) => {
     const menuOptions = this.getMenuOptions();
     const firstOptionInSelection =
-      useFocusForSelection && this.lastOptionFocused !== null
-        ? this.lastOptionFocused
-        : this.lastOptionSelected !== null
-        ? this.lastOptionSelected
-        : null;
-    // const firstOptionInSelection = this.lastOptionSelected !== null ? this.lastOptionSelected : useFocusForSelection && this.lastOptionFocused !== null ? this.lastOptionFocused : null;
-
+      this.getFirstOptionInSelection(useFocusForSelection);
     if (event.shiftKey && firstOptionInSelection !== null) {
-      console.log(firstOptionInSelection);
-      this.handleMultipleShiftSelect(optionIndex, useFocusForSelection);
-
-      // lastOptionSelected = optionIndex;
-    } else if (!emitOptionSelect) {
+      this.handleMultipleShiftSelect(
+        optionIndex,
+        useFocusForSelection,
+        firstOptionInSelection
+      );
+    } else {
       this.selectHighlightedOption(event.target, menuOptions, optionIndex);
-
-      // lastOptionSelected = this.isOptionSelected(optionIndex)
-      //   ? null
-      //   : optionIndex;
     }
 
     this.lastOptionFocused = optionIndex;
     this.lastOptionSelected = optionIndex;
+  };
+
+  private getFirstOptionInSelection = (
+    useFocusForSelection: boolean
+  ): number => {
+    return useFocusForSelection && this.lastOptionFocused !== null
+      ? this.lastOptionFocused
+      : this.lastOptionSelected !== null
+      ? this.lastOptionSelected
+      : null;
   };
 
   private emitSelectAll = () => {

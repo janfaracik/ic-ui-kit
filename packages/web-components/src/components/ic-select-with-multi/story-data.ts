@@ -1,4 +1,4 @@
-import { IcMenuOption } from "@ukic/web-components";
+import { IcMenuOption } from "../../utils/types";
 
 /* eslint-disable */
 

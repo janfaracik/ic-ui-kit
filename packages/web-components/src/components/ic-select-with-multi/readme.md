@@ -87,13 +87,13 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- ic-input-container
-- ic-input-label
-- ic-input-component-container
-- ic-typography
-- ic-button
+- [ic-input-container](../ic-input-container)
+- [ic-input-label](../ic-input-label)
+- [ic-input-component-container](../ic-input-component-container)
+- [ic-typography](../ic-typography)
+- [ic-button](../ic-button)
 - [ic-menu-with-multi](../ic-menu-with-multi)
-- ic-input-validation
+- [ic-input-validation](../ic-input-validation)
 
 ### Graph
 ```mermaid

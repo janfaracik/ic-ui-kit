@@ -61,9 +61,9 @@ Type: `Promise<void>`
 
 ### Depends on
 
-- ic-loading-indicator
-- ic-typography
-- ic-button
+- [ic-loading-indicator](../ic-loading-indicator)
+- [ic-typography](../ic-typography)
+- [ic-button](../ic-button)
 
 ### Graph
 ```mermaid

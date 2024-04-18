@@ -90,11 +90,13 @@ Type: `Promise<void>`
  - [ic-horizontal-scroll](../ic-horizontal-scroll)
  - [ic-menu](../ic-menu)
  - [ic-menu-item](../ic-menu-item)
+ - [ic-menu-with-multi](../ic-menu-with-multi)
  - [ic-navigation-button](../ic-navigation-button)
  - [ic-navigation-menu](../ic-navigation-menu)
  - [ic-pagination](../ic-pagination)
  - [ic-search-bar](../ic-search-bar)
  - [ic-select](../ic-select)
+ - [ic-select-with-multi](../ic-select-with-multi)
  - [ic-side-navigation](../ic-side-navigation)
  - [ic-toast](../ic-toast)
  - [ic-toggle-button](../ic-toggle-button)
@@ -118,11 +120,13 @@ graph TD;
   ic-horizontal-scroll --> ic-button
   ic-menu --> ic-button
   ic-menu-item --> ic-button
+  ic-menu-with-multi --> ic-button
   ic-navigation-button --> ic-button
   ic-navigation-menu --> ic-button
   ic-pagination --> ic-button
   ic-search-bar --> ic-button
   ic-select --> ic-button
+  ic-select-with-multi --> ic-button
   ic-side-navigation --> ic-button
   ic-toast --> ic-button
   ic-toggle-button --> ic-button

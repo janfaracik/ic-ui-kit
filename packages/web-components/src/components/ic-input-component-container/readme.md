@@ -40,12 +40,14 @@
 ### Used by
 
  - [ic-select](../ic-select)
+ - [ic-select-with-multi](../ic-select-with-multi)
  - [ic-text-field](../ic-text-field)
 
 ### Graph
 ```mermaid
 graph TD;
   ic-select --> ic-input-component-container
+  ic-select-with-multi --> ic-input-component-container
   ic-text-field --> ic-input-component-container
   style ic-input-component-container fill:#f9f,stroke:#333,stroke-width:4px
 ```
