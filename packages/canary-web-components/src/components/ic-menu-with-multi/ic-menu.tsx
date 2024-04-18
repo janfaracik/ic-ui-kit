@@ -589,7 +589,6 @@ export class Menu {
   // Deselect currently selected options when shift pressed
   // If the two first new options being selected were already selected, don't re-add to selection i.e. don't emit icOptionSelect again
   private deselectSelectedOptions = (optionsToKeepSelected: number[]) => {
-    console.log("deselect selected options");
     const menuOptions = this.getMenuOptions();
 
     if (this.value) {
@@ -613,7 +612,7 @@ export class Menu {
     // Prevent focus disappearing on currently focused option when Shift / Cmd / Ctrl pressed
     if (
       !event.shiftKey &&
-      !((isMacDevice() && event.metaKey) || (!isMacDevice() && event.ctrlKey))
+      !((isMacDevice() && event.metaKey) || event.ctrlKey)
     ) {
       this.keyboardNav = false;
     }
@@ -641,7 +640,6 @@ export class Menu {
             this.setHighlightedOption(clickedMultiOptionIndex);
             this.multiOptionClicked = null;
           } else {
-            console.log("shift pressed" + this.shiftPressed);
             this.handleSingleShiftSelect(
               event,
               highlightedOptionIndex,
@@ -738,26 +736,40 @@ export class Menu {
           this.focusFromSearchKeypress = false;
           break;
         case "Home":
+          const startOptionIndex = 0;
+
           this.keyboardNav = true;
           event.preventDefault();
           this.arrowBehaviour(event);
-          this.setHighlightedOption(0);
+          this.setHighlightedOption(startOptionIndex);
           this.menuOptionId.emit({
-            optionId: getOptionId(0),
+            optionId: getOptionId(startOptionIndex),
           });
 
           if (event.shiftKey && event.ctrlKey) {
-            console.log("Ctrl + Shift + Home");
+            this.handleMultipleShiftSelect(highlightedOptionIndex, startOptionIndex)
           }
+
+          this.lastOptionFocused = startOptionIndex;
+          this.lastOptionSelected = startOptionIndex;
           break;
         case "End":
+          const endOptionIndex = menuOptions.length - 1;
+
           this.keyboardNav = true;
           event.preventDefault();
           this.arrowBehaviour(event);
-          this.setHighlightedOption(menuOptions.length - 1);
+          this.setHighlightedOption(endOptionIndex);
           this.menuOptionId.emit({
-            optionId: getOptionId(menuOptions.length - 1),
+            optionId: getOptionId(endOptionIndex),
           });
+
+          if (event.shiftKey && event.ctrlKey) {
+            this.handleMultipleShiftSelect(highlightedOptionIndex, endOptionIndex)
+          }
+
+          this.lastOptionFocused = endOptionIndex;
+          this.lastOptionSelected = endOptionIndex;
           break;
         case " ":
           if (this.isSearchBar || this.isSearchableSelect) {
@@ -973,6 +985,7 @@ export class Menu {
       !this.isOptionSelected(optionToSelectIndex)
     ) {
       this.selectHighlightedOption(event.target, options, optionToSelectIndex);
+      this.lastOptionSelected = optionToSelectIndex;
     }
   };
 
@@ -982,8 +995,6 @@ export class Menu {
     firstOptionInSelection: number,
     lastOptionInSelection: number
   ) => {
-    console.log("this.lastOptionSelected " + this.lastOptionSelected);
-
     this.shiftPressed = false;
 
     // if (event.shiftKey && this.lastOptionSelected) {
@@ -1014,7 +1025,6 @@ export class Menu {
     useFocusForSelection: boolean = false
   ) => {
     const menuOptions = this.getMenuOptions();
-    // let lastOptionSelected;
     const firstOptionInSelection =
       useFocusForSelection && this.lastOptionFocused !== null
         ? this.lastOptionFocused
