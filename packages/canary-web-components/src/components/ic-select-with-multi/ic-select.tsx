@@ -48,7 +48,6 @@ let inputIds = 0;
     delegatesFocus: true,
   },
 })
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export class Select {
   private anchorEl: HTMLElement;
   private blurredBecauseButtonPressed: boolean;
@@ -58,7 +57,7 @@ export class Select {
   private debounceAria: number;
   private hasSetDefaultValue = false;
   private hasTimedOut: boolean;
-  private inheritedAttributes: { [k: string]: unknown } = {};
+  private inheritedAttributes: { [k: string]: string } = {};
   private initialOptionsEmpty = false;
   private inputId = `ic-select-input-${inputIds++}`;
   private menu: HTMLIcMenuWithMultiElement;
@@ -1000,8 +999,8 @@ export class Select {
     this.icFocus.emit();
   };
 
-  private onBlur = (event: FocusEvent): void => {
-    const target = event.relatedTarget as HTMLElement;
+  private onBlur = ({ relatedTarget }: FocusEvent): void => {
+    const target = relatedTarget as HTMLElement;
     if (
       target !== null &&
       ((target.tagName === "UL" && target.className.includes("menu")) ||
@@ -1013,12 +1012,13 @@ export class Select {
     const retryButton = this.menu?.querySelector("#retry-button");
     const isSearchableAndNoFocusedInternalElements =
       this.searchable &&
-      event.relatedTarget !== this.menu &&
+      !!this.menu &&
+      target !== this.menu &&
       !Array.from(this.menu.querySelectorAll("[role='option']")).includes(
-        event.relatedTarget as Element
+        target
       ) &&
-      !(this.clearButton && event.relatedTarget === this.clearButton) &&
-      !(retryButton && event.relatedTarget === retryButton);
+      !(this.clearButton && target === this.clearButton) &&
+      !(retryButton && target === retryButton);
 
     if (isSearchableAndNoFocusedInternalElements) {
       if (!this.retryButtonClick) {

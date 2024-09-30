@@ -52,14 +52,14 @@ export const stringEnumToArray = (
 export const inheritAttributes = (
   element: HTMLElement,
   attributes: string[] = []
-): { [key: string]: unknown } => {
-  const attributeObject: { [key: string]: unknown } = {};
+): { [key: string]: string } => {
+  const attributeObject: { [key: string]: string } = {};
 
   attributes.forEach((attr) => {
     if (element.hasAttribute(attr)) {
       const value = element.getAttribute(attr);
       if (value !== null) {
-        attributeObject[attr] = element.getAttribute(attr);
+        attributeObject[attr] = value;
       }
       element.removeAttribute(attr);
     }
@@ -377,9 +377,8 @@ export const getInputDescribedByText = (
   helperText: boolean,
   validationText: boolean
 ): string =>
-  `${helperText ? getInputHelperTextID(inputId) : ""} ${
-    validationText ? getInputValidationTextID(inputId) : ""
-  }`.trim();
+  `${helperText ? getInputHelperTextID(inputId) : ""} ${validationText ? getInputValidationTextID(inputId) : ""
+    }`.trim();
 
 export const isMobileOrTablet = (): boolean =>
   "maxTouchPoints" in navigator ? navigator.maxTouchPoints > 0 : false;
@@ -439,12 +438,12 @@ export const getFilteredMenuOptions = (
     return position === "anywhere"
       ? includeDescriptions
         ? label.includes(lowerSearchString) ||
-          description?.includes(lowerSearchString)
+        description?.includes(lowerSearchString)
         : label.includes(lowerSearchString)
       : includeDescriptions
-      ? label.startsWith(lowerSearchString) ||
+        ? label.startsWith(lowerSearchString) ||
         description?.startsWith(lowerSearchString)
-      : label.startsWith(lowerSearchString);
+        : label.startsWith(lowerSearchString);
   });
 
 /**
