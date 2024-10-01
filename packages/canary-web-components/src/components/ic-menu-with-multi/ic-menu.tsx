@@ -58,7 +58,7 @@ export class Menu {
   private shiftPressed: boolean = false;
   private ungroupedOptions: IcMenuOption[] = [];
 
-  @Element() el: HTMLIcMenuWithMultiElement;
+  @Element() host: HTMLIcMenuWithMultiElement;
 
   @State() focusFromSearchKeypress: boolean = false;
   @State() initialOptionsListRender: boolean = false;
@@ -280,7 +280,7 @@ export class Menu {
         !this.focusFromSearchKeypress &&
         !this.preventIncorrectTabOrder
       ) {
-        const highlightedEl = this.el.querySelector(
+        const highlightedEl = this.host.querySelector(
           `li[data-value="${this.optionHighlighted}"]`
         ) as HTMLElement;
 
@@ -357,7 +357,7 @@ export class Menu {
   @Method()
   async initPopperJs(anchor: HTMLElement): Promise<void> {
     // Placements set to "-start" to accommodate for custom menu width - menu should always be aligned to the left
-    this.popperInstance = createPopper(anchor, this.el, {
+    this.popperInstance = createPopper(anchor, this.host, {
       placement: "bottom-start",
       modifiers: [
         {
@@ -596,7 +596,7 @@ export class Menu {
     );
 
     const getOptionId = (index: number): string =>
-      Array.from(this.el.querySelectorAll("li"))[index]?.id;
+      Array.from(this.host.querySelectorAll("li"))[index]?.id;
 
     // Space press should be equivalent to Enter when multi-select
     if (event.key === " " && this.isMultiSelect) {
@@ -938,14 +938,14 @@ export class Menu {
   };
 
   private handleSelectAllBlur = (event: FocusEvent) => {
-    this.el.classList.remove("select-all-focused");
+    this.host.classList.remove("select-all-focused");
     if (!this.menu.contains(event.relatedTarget as HTMLElement)) {
       this.handleMenuChange(false, false);
     }
   };
 
   private handleSelectAllFocus = () => {
-    this.el.classList.add("select-all-focused");
+    this.host.classList.add("select-all-focused");
     this.lastOptionFocused = null;
     this.lastOptionSelected = null;
   };
@@ -1177,7 +1177,7 @@ export class Menu {
 
   private scrollToSelected = (menu: HTMLUListElement) => {
     const selectedOption = this.selectOnEnter
-      ? (this.el.querySelector(
+      ? (this.host.querySelector(
           `li[data-value="${this.optionHighlighted}"]`
         ) as HTMLElement)
       : (menu.querySelector(".option[aria-selected='true']") as HTMLElement);
@@ -1217,7 +1217,7 @@ export class Menu {
 
   private setMenuScrollbar = () => {
     let optionsHeight = 0;
-    this.el
+    this.host
       .querySelectorAll(".option")
       .forEach((option) => (optionsHeight += option.clientHeight));
 
@@ -1383,7 +1383,7 @@ export class Menu {
       value?.length === this.ungroupedOptions.length ? "Clear" : "Select"
     } all`;
 
-    const hasNoResults = this.el.classList.contains("no-results");
+    const hasNoResults = this.host.classList.contains("no-results");
 
     return (
       <Host
