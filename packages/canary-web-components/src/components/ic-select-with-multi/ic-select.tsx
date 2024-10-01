@@ -176,7 +176,7 @@ export class Select {
   @Prop() searchMatchPosition?: IcSearchMatchPositions = "anywhere";
 
   /**
-   * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.
+   * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown. Only applies to the single select variant.
    */
   @Prop() selectOnEnter?: boolean = false;
 
