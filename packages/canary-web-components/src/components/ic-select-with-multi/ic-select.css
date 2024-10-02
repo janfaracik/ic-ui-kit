@@ -199,6 +199,7 @@ select:not([disabled]) {
 
 .clear-button-container {
   display: flex;
+  align-items: center;
 }
 
 .divider {
