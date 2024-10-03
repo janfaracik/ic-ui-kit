@@ -17,7 +17,6 @@ import {
   IcPaginationLabelTypes,
   IcPaginationTypes,
 } from "@ukic/web-components/dist/types/components/ic-pagination/ic-pagination.types";
-import { IcPageChangeEventDetail } from "./ic-pagination-bar.types";
 
 @Component({
   tag: "ic-pagination-bar",
