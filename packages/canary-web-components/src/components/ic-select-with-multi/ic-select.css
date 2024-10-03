@@ -133,7 +133,7 @@ select:not([disabled]) {
   padding-right: calc(var(--ic-space-xl) + var(--ic-space-xs));
 }
 
-.value-text p {
+.value-text {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -153,7 +153,7 @@ select:not([disabled]) {
   color: var(--ic-action-dark);
 }
 
-.expand-icon > svg {
+.expand-icon>svg {
   display: inline-block;
   width: var(--ic-space-lg);
   height: var(--ic-space-lg);

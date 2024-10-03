@@ -1243,7 +1243,7 @@ export class Menu {
               ></div>
             )}
             <ic-typography variant="body" aria-hidden="true">
-              <p>{option[this.labelField]}</p>
+              {option[this.labelField]}
             </ic-typography>
           </div>
           {option.description && (
