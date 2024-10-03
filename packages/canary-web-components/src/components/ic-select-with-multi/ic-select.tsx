@@ -332,30 +332,45 @@ export class Select {
     }
   }
 
+  @Watch("open")
+  openChangedHandler(): void {
+    this.open ? this.icOpen.emit() : this.icClose.emit();
+  }
+
   /**
    * Emitted when the select loses focus.
    */
-  @Event() icBlur!: EventEmitter<void>;
+  @Event() icBlur: EventEmitter<void>;
 
   /**
    * Emitted when the value changes.
    */
-  @Event() icChange!: EventEmitter<IcValueEventDetail>;
+  @Event() icChange: EventEmitter<IcValueEventDetail>;
 
   /**
    * Emitted when the clear button is clicked.
    */
-  @Event() icClear!: EventEmitter<void>;
+  @Event() icClear: EventEmitter<void>;
+
+  /**
+   * Emitted when the select options menu is closed.
+   */
+  @Event() icClose: EventEmitter<void>;
 
   /**
    * Emitted when the select gains focus.
    */
-  @Event() icFocus!: EventEmitter<void>;
+  @Event() icFocus: EventEmitter<void>;
 
   /**
    * Emitted when a keyboard input occurred.
    */
   @Event() icInput: EventEmitter<IcValueEventDetail>;
+
+  /**
+   * Emitted when the select options menu is opened.
+   */
+  @Event() icOpen: EventEmitter<void>;
 
   /**
    * Emitted when an option is selected.
@@ -1008,9 +1023,8 @@ export class Select {
       ".multi-select-selected-count"
     ) as HTMLDivElement;
 
-    const selectedCount = `${
-      this.currValue?.length
-    } of ${getOptionsWithoutGroupTitlesCount(this.options)} selected`;
+    const selectedCount = `${this.currValue?.length
+      } of ${getOptionsWithoutGroupTitlesCount(this.options)} selected`;
 
     if (
       multiSelectSelectedCountEl &&
@@ -1071,7 +1085,7 @@ export class Select {
   private onTimeoutBlur = (ev: CustomEvent) => {
     if (
       (ev.detail.ev as FocusEvent).relatedTarget !==
-        this.searchableSelectElement &&
+      this.searchableSelectElement &&
       !this.blurredBecauseButtonPressed
     ) {
       this.setMenuChange(false);
@@ -1133,9 +1147,8 @@ export class Select {
       hasValidationStatus(this.validationStatus, this.disabled)
     ).trim();
 
-    const optionsSelectedCount = `${
-      currValue?.length
-    } of ${getOptionsWithoutGroupTitlesCount(this.options)} selected`;
+    const optionsSelectedCount = `${currValue?.length
+      } of ${getOptionsWithoutGroupTitlesCount(this.options)} selected`;
 
     return (
       <Host
@@ -1308,14 +1321,13 @@ export class Select {
                   class="select-input"
                   ref={(el) => (this.customSelectElement = el)}
                   id={this.inputId}
-                  aria-label={`${label}, ${
-                    (multiple && currValue
+                  aria-label={`${label}, ${(multiple && currValue
                       ? `${optionsSelectedCount}, ${this.getMultipleOptionsString(
-                          currValue as string[]
-                        )}`
+                        currValue as string[]
+                      )}`
                       : this.getLabelFromValue(currValue as string)) ||
                     placeholder
-                  }${required ? ", required" : ""}`}
+                    }${required ? ", required" : ""}`}
                   aria-describedby={describedBy}
                   aria-invalid={invalid}
                   aria-haspopup="listbox"
