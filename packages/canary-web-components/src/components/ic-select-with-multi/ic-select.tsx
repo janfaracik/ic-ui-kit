@@ -1355,12 +1355,10 @@ export class Select {
                         !this.value || (multiple && this.value.length < 1),
                     }}
                   >
-                    <p>
-                      {(multiple
-                        ? this.getMultipleOptionsString(currValue as string[])
-                        : this.getLabelFromValue(currValue as string)) ||
-                        placeholder}
-                    </p>
+                    {(multiple
+                      ? this.getMultipleOptionsString(currValue as string[])
+                      : this.getLabelFromValue(currValue as string)) ||
+                      placeholder}
                   </ic-typography>
                   <div class="select-input-end">
                     {currValue && showClearButton && (
