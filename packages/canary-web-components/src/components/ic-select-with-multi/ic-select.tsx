@@ -27,6 +27,7 @@ import {
   addFormResetListener,
   removeFormResetListener,
   removeDisabledFalse,
+  checkSlotInChildMutations,
 } from "../../utils/helpers";
 import { IC_INHERITED_ARIA } from "../../utils/constants";
 import {
@@ -43,6 +44,9 @@ import Clear from "./assets/Clear.svg";
 let inputIds = 0;
 const MUTABLE_ATTRIBUTES = [...IC_INHERITED_ARIA, "tabindex", "title"];
 
+/**
+ * @slot icon - Content will be placed to the left of the select text input.
+ */
 @Component({
   tag: "ic-select-with-multi",
   styleUrl: "ic-select.css",
@@ -433,6 +437,7 @@ export class Select {
     this.hostMutationObserver = new MutationObserver(this.hostMutationCallback);
     this.hostMutationObserver.observe(this.el, {
       attributes: true,
+      childList: true,
     });
   }
 
@@ -459,13 +464,21 @@ export class Select {
   // triggered when attributes of host element change
   private hostMutationCallback = (mutationList: MutationRecord[]): void => {
     let forceComponentUpdate = false;
-    mutationList.forEach(({ attributeName }) => {
-      if (MUTABLE_ATTRIBUTES.includes(attributeName)) {
-        this.inheritedAttributes[attributeName] =
-          this.el.getAttribute(attributeName);
-        forceComponentUpdate = true;
+    mutationList.forEach(
+      ({ attributeName, type, addedNodes, removedNodes }) => {
+        if (MUTABLE_ATTRIBUTES.includes(attributeName)) {
+          this.inheritedAttributes[attributeName] =
+            this.el.getAttribute(attributeName);
+          forceComponentUpdate = true;
+        } else if (type === "childList") {
+          forceComponentUpdate = checkSlotInChildMutations(
+            addedNodes,
+            removedNodes,
+            "icon"
+          );
+        }
       }
-    });
+    );
     if (forceComponentUpdate) {
       forceUpdate(this);
     }
@@ -1170,6 +1183,11 @@ export class Select {
       hasValidationStatus(this.validationStatus, this.disabled)
     ).trim();
 
+    let showLeftIcon = !!this.el.querySelector(`[slot="icon"]`);
+    if (showLeftIcon && (disabled || (readonly && !this.value))) {
+      showLeftIcon = false;
+    }
+
     const optionsSelectedCount = `${
       currValue?.length
     } of ${getOptionsWithoutGroupTitlesCount(this.options)} selected`;
@@ -1206,6 +1224,17 @@ export class Select {
             readonly={readonly}
             validationStatus={validationStatus}
           >
+            {showLeftIcon && (
+              <span
+                slot="left-icon"
+                class={{
+                  ["readonly"]: readonly,
+                  ["has-value"]: !!this.value,
+                }}
+              >
+                <slot name="icon" />
+              </span>
+            )}
             {readonly ? (
               <ic-typography>
                 <p>
@@ -1340,7 +1369,12 @@ export class Select {
                 ></div>
               </div>
             ) : (
-              <div class="select-container">
+              <div
+                class={{
+                  "select-container": true,
+                  "with-icon": showLeftIcon,
+                }}
+              >
                 <button
                   class="select-input"
                   ref={(el) => (this.customSelectElement = el)}
