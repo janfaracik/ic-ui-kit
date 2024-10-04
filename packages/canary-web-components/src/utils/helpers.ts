@@ -52,8 +52,8 @@ export const stringEnumToArray = (
 export const inheritAttributes = (
   element: HTMLElement,
   attributes: string[] = []
-): { [key: string]: unknown } => {
-  const attributeObject: { [key: string]: unknown } = {};
+): { [key: string]: string } => {
+  const attributeObject: { [key: string]: string } = {};
 
   attributes.forEach((attr) => {
     if (element.hasAttribute(attr)) {
