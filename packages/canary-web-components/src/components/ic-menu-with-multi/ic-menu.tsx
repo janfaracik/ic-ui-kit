@@ -919,14 +919,14 @@ export class Menu {
   };
 
   private handleSelectAllBlur = (event: FocusEvent) => {
-    this.host.classList.remove("select-all-focused");
+    this.host.classList.remove("ic-select-select-all-focused");
     if (!this.menu.contains(event.relatedTarget as HTMLElement)) {
       this.handleMenuChange(false, false);
     }
   };
 
   private handleSelectAllFocus = () => {
-    this.host.classList.add("select-all-focused");
+    this.host.classList.add("ic-select-select-all-focused");
     this.lastOptionFocused = null;
     this.lastOptionSelected = null;
   };

@@ -31,7 +31,7 @@
   outline: var(--ic-hc-focus-outline);
 }
 
-:host(.select-all-focused) {
+:host(.ic-select-select-all-focused) {
   box-shadow: var(--ic-elevation-overlay) !important;
 }
 
