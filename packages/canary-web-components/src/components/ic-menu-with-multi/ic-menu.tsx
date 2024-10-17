@@ -257,14 +257,9 @@ export class Menu {
   }
 
   componentDidUpdate(): void {
-    const inputValueInOptions: boolean = this.options.some(
+    const inputValueInOptions = this.options.some(
       (option) => option[this.valueField] === this.value
     );
-
-    const optionHighlightedIsSet =
-      this.optionHighlighted !== null &&
-      this.optionHighlighted !== undefined &&
-      this.optionHighlighted !== "";
 
     if (this.open && this.options.length !== 0 && !this.preventMenuFocus) {
       if (
@@ -276,7 +271,7 @@ export class Menu {
       ) {
         this.scrollToSelected(this.menu);
       } else if (
-        optionHighlightedIsSet &&
+        !!this.optionHighlighted &&
         !this.focusFromSearchKeypress &&
         !this.preventIncorrectTabOrder
       ) {
@@ -332,8 +327,6 @@ export class Menu {
    */
   @Method()
   async handleKeyboardOpen(event: KeyboardEvent): Promise<void> {
-    this.keyboardNav = false;
-
     if (this.activationType === "automatic") {
       this.autoSetInputValueKeyboardOpen(event);
     } else {
@@ -583,11 +576,10 @@ export class Menu {
   private manualSetInputValueKeyboardOpen = (event: KeyboardEvent) => {
     const menuOptions = this.getMenuOptions();
 
-    // Prevent focus disappearing on currently focused option when Shift / Cmd / Ctrl pressed
+    // For preventing focus disappearing on currently focused option when Shift / Cmd / Ctrl pressed
     // (i.e. when user is likely in the middle of executing a keyboard combination to select options)
-    if (!(event.shiftKey || event.metaKey || event.ctrlKey)) {
-      this.keyboardNav = false;
-    }
+    const isKeyboardCombination =
+      event.shiftKey || event.metaKey || event.ctrlKey;
 
     const highlightedOptionIndex = this.getOptionHighlightedIndex();
 
@@ -746,6 +738,9 @@ export class Menu {
           break;
         }
         case " ":
+          if (!isKeyboardCombination) {
+            this.keyboardNav = false;
+          }
           if (this.isSearchBar || this.isSearchableSelect) {
             break;
           } else {
@@ -756,7 +751,9 @@ export class Menu {
           break;
         case "Enter":
           event.preventDefault();
-
+          if (!isKeyboardCombination) {
+            this.keyboardNav = false;
+          }
           this.handleOptionSelect(event, highlightedOptionIndex);
           break;
         case "Escape":
@@ -799,6 +796,9 @@ export class Menu {
           }
           break;
         default:
+          if (!isKeyboardCombination) {
+            this.keyboardNav = false;
+          }
           this.focusOnSearchOrSelectInput(menuOptions, highlightedOptionIndex);
       }
     }
