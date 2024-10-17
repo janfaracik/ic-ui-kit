@@ -624,7 +624,7 @@ export namespace Components {
          */
         "searchable"?: boolean;
         /**
-          * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.
+          * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown. Only applies to the single select variant.
          */
         "selectOnEnter"?: boolean;
         /**
@@ -872,8 +872,10 @@ declare global {
         "icBlur": void;
         "icChange": IcValueEventDetail;
         "icClear": void;
+        "icClose": void;
         "icFocus": void;
         "icInput": IcValueEventDetail;
+        "icOpen": void;
         "icOptionSelect": IcOptionSelectEventDetail;
         "icOptionDeselect": IcOptionSelectEventDetail;
         "icRetryLoad": IcValueEventDetail;
@@ -1542,6 +1544,10 @@ declare namespace LocalJSX {
          */
         "onIcClear"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
         /**
+          * Emitted when the select options menu is closed.
+         */
+        "onIcClose"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
+        /**
           * Emitted when the select gains focus.
          */
         "onIcFocus"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
@@ -1549,6 +1555,10 @@ declare namespace LocalJSX {
           * Emitted when a keyboard input occurred.
          */
         "onIcInput"?: (event: IcSelectWithMultiCustomEvent<IcValueEventDetail>) => void;
+        /**
+          * Emitted when the select options menu is opened.
+         */
+        "onIcOpen"?: (event: IcSelectWithMultiCustomEvent<void>) => void;
         /**
           * Emitted when `multiple` is `true` and an option is deselected.
          */
@@ -1586,7 +1596,7 @@ declare namespace LocalJSX {
          */
         "searchable"?: boolean;
         /**
-          * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.
+          * If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown. Only applies to the single select variant.
          */
         "selectOnEnter"?: boolean;
         /**
