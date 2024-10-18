@@ -3774,7 +3774,12 @@
       "tag": "ic-select-with-multi",
       "readme": "# ic-select\n\n\n",
       "docs": "",
-      "docsTags": [],
+      "docsTags": [
+        {
+          "name": "slot",
+          "text": "icon - Content will be placed to the left of the select text input."
+        }
+      ],
       "usage": {},
       "props": [
         {
@@ -4286,7 +4291,7 @@
           "mutable": false,
           "attr": "select-on-enter",
           "reflectToAttr": false,
-          "docs": "If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.",
+          "docs": "If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown. Only applies to the single select variant.",
           "docsTags": [],
           "default": "false",
           "values": [
@@ -4538,6 +4543,20 @@
           "docsTags": []
         },
         {
+          "event": "icClose",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the select options menu is closed.",
+          "docsTags": []
+        },
+        {
           "event": "icFocus",
           "detail": "void",
           "bubbles": true,
@@ -4569,6 +4588,20 @@
           "cancelable": true,
           "composed": true,
           "docs": "Emitted when a keyboard input occurred.",
+          "docsTags": []
+        },
+        {
+          "event": "icOpen",
+          "detail": "void",
+          "bubbles": true,
+          "complexType": {
+            "original": "void",
+            "resolved": "void",
+            "references": {}
+          },
+          "cancelable": true,
+          "composed": true,
+          "docs": "Emitted when the select options menu is opened.",
           "docsTags": []
         },
         {
@@ -4650,7 +4683,12 @@
           "docs": "Width of the dropdown menu"
         }
       ],
-      "slots": [],
+      "slots": [
+        {
+          "name": "icon",
+          "docs": "Content will be placed to the left of the select text input."
+        }
+      ],
       "parts": [],
       "dependents": [],
       "dependencies": [
@@ -5125,13 +5163,7 @@
           "passive": false
         }
       ],
-      "styles": [
-        {
-          "name": "--tree-view-width",
-          "annotation": "prop",
-          "docs": "Width of the tree view"
-        }
-      ],
+      "styles": [],
       "slots": [
         {
           "name": "heading",

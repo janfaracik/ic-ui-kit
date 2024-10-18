@@ -969,7 +969,7 @@ export namespace Components {
         "handleClickOpen": () => Promise<void>;
         /**
           * Used alongside activationType If menu is opened via keyboard navigation (i.e. Enter, ArrowUp or ArrowDown), emit optionSelect custom event.
-          * @param event - keyboard event
+          * @param event The keyboard event which is available when handleKeyboardOpen is invoked.
          */
         "handleKeyboardOpen": (event: KeyboardEvent) => Promise<void>;
         "handleSetFirstOption": () => Promise<void>;

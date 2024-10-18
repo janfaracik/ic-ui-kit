@@ -34,9 +34,9 @@ If menu is opened via keyboard navigation (i.e. Enter, ArrowUp or ArrowDown), em
 
 #### Parameters
 
-| Name    | Type            | Description      |
-| ------- | --------------- | ---------------- |
-| `event` | `KeyboardEvent` | - keyboard event |
+| Name    | Type            | Description                                                               |
+| ------- | --------------- | ------------------------------------------------------------------------- |
+| `event` | `KeyboardEvent` | The keyboard event which is available when handleKeyboardOpen is invoked. |
 
 #### Returns
 

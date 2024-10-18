@@ -31,7 +31,7 @@
 | `required`                    | `required`                       | If `true`, the select will require a value.                                                                                                                                                                                             | `boolean`                                 | `false`              |
 | `searchMatchPosition`         | `search-match-position`          | Whether the search string of the searchable select should match the start of or anywhere in the options. Only applies to built in filtering.                                                                                            | `"anywhere" \| "start"`                   | `"anywhere"`         |
 | `searchable`                  | `searchable`                     | If `true`, a searchable variant of the select will be displayed which can be typed in to filter options.                                                                                                                                | `boolean`                                 | `false`              |
-| `selectOnEnter`               | `select-on-enter`                | If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown.                                                                                                                                            | `boolean`                                 | `false`              |
+| `selectOnEnter`               | `select-on-enter`                | If `true`, the icOptionSelect event will be fired on enter instead of ArrowUp and ArrowDown. Only applies to the single select variant.                                                                                                 | `boolean`                                 | `false`              |
 | `showClearButton`             | `show-clear-button`              | If `true`, a button which clears the select input when clicked will be displayed. The button will always appear on the searchable select.                                                                                               | `boolean`                                 | `false`              |
 | `size`                        | `size`                           | The size of the select.                                                                                                                                                                                                                 | `"large" \| "medium" \| "small"`          | `"medium"`           |
 | `timeout`                     | `timeout`                        | If using external filtering, set a timeout for when loading takes too long.                                                                                                                                                             | `number`                                  | `undefined`          |
@@ -47,8 +47,10 @@
 | `icBlur`           | Emitted when the select loses focus.                                                                                               | `CustomEvent<void>`                      |
 | `icChange`         | Emitted when the value changes.                                                                                                    | `CustomEvent<IcValueEventDetail>`        |
 | `icClear`          | Emitted when the clear button is clicked.                                                                                          | `CustomEvent<void>`                      |
+| `icClose`          | Emitted when the select options menu is closed.                                                                                    | `CustomEvent<void>`                      |
 | `icFocus`          | Emitted when the select gains focus.                                                                                               | `CustomEvent<void>`                      |
 | `icInput`          | Emitted when a keyboard input occurred.                                                                                            | `CustomEvent<IcValueEventDetail>`        |
+| `icOpen`           | Emitted when the select options menu is opened.                                                                                    | `CustomEvent<void>`                      |
 | `icOptionDeselect` | Emitted when `multiple` is `true` and an option is deselected.                                                                     | `CustomEvent<IcOptionSelectEventDetail>` |
 | `icOptionSelect`   | Emitted when an option is selected. Selecting an option will also trigger an `icChange/onIcChange` due to the value being updated. | `CustomEvent<IcOptionSelectEventDetail>` |
 | `icRetryLoad`      | Emitted when the 'retry loading' button is clicked for a searchable variant.                                                       | `CustomEvent<IcValueEventDetail>`        |
@@ -65,6 +67,13 @@ Sets focus on the input box.
 Type: `Promise<void>`
 
 
+
+
+## Slots
+
+| Slot     | Description                                                  |
+| -------- | ------------------------------------------------------------ |
+| `"icon"` | Content will be placed to the left of the select text input. |
 
 
 ## CSS Custom Properties

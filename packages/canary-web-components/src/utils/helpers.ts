@@ -377,8 +377,9 @@ export const getInputDescribedByText = (
   helperText: boolean,
   validationText: boolean
 ): string =>
-  `${helperText ? getInputHelperTextID(inputId) : ""} ${validationText ? getInputValidationTextID(inputId) : ""
-    }`.trim();
+  `${helperText ? getInputHelperTextID(inputId) : ""} ${
+    validationText ? getInputValidationTextID(inputId) : ""
+  }`.trim();
 
 export const isMobileOrTablet = (): boolean =>
   "maxTouchPoints" in navigator ? navigator.maxTouchPoints > 0 : false;
@@ -438,12 +439,12 @@ export const getFilteredMenuOptions = (
     return position === "anywhere"
       ? includeDescriptions
         ? label.includes(lowerSearchString) ||
-        description?.includes(lowerSearchString)
+          description?.includes(lowerSearchString)
         : label.includes(lowerSearchString)
       : includeDescriptions
-        ? label.startsWith(lowerSearchString) ||
+      ? label.startsWith(lowerSearchString) ||
         description?.startsWith(lowerSearchString)
-        : label.startsWith(lowerSearchString);
+      : label.startsWith(lowerSearchString);
   });
 
 /**
