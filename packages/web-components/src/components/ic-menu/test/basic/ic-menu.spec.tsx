@@ -152,7 +152,9 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowDown"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
 
     await page.waitForChanges();
 
@@ -370,7 +372,7 @@ describe("ic-menu in isolation", () => {
 
     expect(page.root.value).toBe("espresso");
   });
-  it("should test manSetInputValueKeyboardOpen function", async () => {
+  it("should test manualSetInputValueKeyboardOpen function", async () => {
     const searchBar = window.document.createElement(
       IcSearchBar
     ) as HTMLIcSearchBarElement;
@@ -403,7 +405,7 @@ describe("ic-menu in isolation", () => {
     page.root.addEventListener("menuOptionId", eventSpy);
     page.root.addEventListener("menuOptionSelect", eventSpy);
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowUp"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("ArrowUp"));
 
     await page.waitForChanges();
 
@@ -419,7 +421,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowUp"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("ArrowUp"));
 
     await page.waitForChanges();
 
@@ -435,7 +437,9 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowDown"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
 
     await page.waitForChanges();
 
@@ -451,7 +455,9 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowDown"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
 
     await page.waitForChanges();
 
@@ -467,7 +473,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Enter"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Enter"));
 
     await page.waitForChanges();
 
@@ -483,20 +489,22 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowDown"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
 
     await page.waitForChanges();
 
     expect(page.rootInstance.value).toBe(searchMenuOptions[2].value);
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Enter"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Enter"));
 
     await page.waitForChanges();
 
     expect(page.rootInstance.disabledOptionSelected).toBe(true);
     expect(page.rootInstance.value).toBe(searchMenuOptions[2].value);
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Escape"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Escape"));
 
     await page.waitForChanges();
 
@@ -512,7 +520,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Shift"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Shift"));
 
     await page.waitForChanges();
 
@@ -522,7 +530,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Tab"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Tab"));
 
     await page.waitForChanges();
 
@@ -534,7 +542,9 @@ describe("ic-menu in isolation", () => {
 
     page.rootInstance.setHighlightedOption(4);
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Backspace"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Backspace")
+    );
 
     await page.waitForChanges();
 
@@ -544,7 +554,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("KeyF"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("KeyF"));
 
     await page.waitForChanges();
 
@@ -554,7 +564,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Home"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Home"));
 
     await page.waitForChanges();
 
@@ -568,7 +578,7 @@ describe("ic-menu in isolation", () => {
 
     await page.waitForChanges();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("End"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("End"));
 
     await page.waitForChanges();
 
@@ -611,7 +621,9 @@ describe("ic-menu in isolation", () => {
 
     await page.rootInstance.handleSetFirstOption();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Backspace"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Backspace")
+    );
 
     await page.waitForChanges();
 
@@ -646,7 +658,9 @@ describe("ic-menu in isolation", () => {
 
     page.rootInstance.isSearchableSelect = true;
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Backspace"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Backspace")
+    );
 
     await page.waitForChanges();
 
@@ -683,7 +697,7 @@ describe("ic-menu in isolation", () => {
 
     await page.rootInstance.handleSetFirstOption();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("f"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("f"));
 
     await page.waitForChanges();
 
@@ -718,14 +732,14 @@ describe("ic-menu in isolation", () => {
 
     page.rootInstance.isSearchableSelect = true;
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("f"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("f"));
 
     await page.waitForChanges();
 
     expect(searchableSelect.setFocus).not.toHaveBeenCalled();
   });
 
-  it("should test manSetInputValueKeyboardOpen: setFocus is not triggered if backspace is pressed and focus is not on menu", async () => {
+  it("should test manualSetInputValueKeyboardOpen: setFocus is not triggered if backspace is pressed and focus is not on menu", async () => {
     const select = window.document.createElement(
       "IC-SELECT"
     ) as HTMLIcSelectElement;
@@ -752,14 +766,16 @@ describe("ic-menu in isolation", () => {
 
     page.rootInstance.isSearchBar = true;
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Backspace"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Backspace")
+    );
 
     await page.waitForChanges();
 
     expect(select.setFocus).not.toHaveBeenCalled();
   });
 
-  it("should test manSetInputValueKeyboardOpen: setFocus is triggered if menu is focused and backspace is pressed", async () => {
+  it("should test manualSetInputValueKeyboardOpen: setFocus is triggered if menu is focused and backspace is pressed", async () => {
     const select = window.document.createElement(
       "IC-SELECT"
     ) as HTMLIcSelectElement;
@@ -786,16 +802,20 @@ describe("ic-menu in isolation", () => {
 
     page.rootInstance.isSearchBar = true;
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowDown"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Backspace"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Backspace")
+    );
 
     await page.waitForChanges();
 
     expect(select.setFocus).toHaveBeenCalled();
   });
 
-  it("should test manSetInputValueKeyboardOpen function when default parameter passed", async () => {
+  it("should test manualSetInputValueKeyboardOpen function when default parameter passed", async () => {
     const select = window.document.createElement(
       "IC-SELECT"
     ) as HTMLIcSelectElement;
@@ -823,13 +843,122 @@ describe("ic-menu in isolation", () => {
     page.rootInstance.isSearchBar = false;
     page.rootInstance.isSearchableSelect = true;
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("KeyR"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("KeyR"));
 
     await page.waitForChanges();
 
     expect(page.rootInstance.value).toBe(menuOptions[0].value);
   });
-  it("should test manSetInputValueKeyboardOpen function when select on enter", async () => {
+  it("should test manualSetInputValueKeyboardOpen function when multi-select", async () => {
+    const multiSelect = window.document.createElement(
+      "IC-SELECT"
+    ) as HTMLIcSelectElement;
+    const input = window.document.createElement("input");
+    const page = await newSpecPage({
+      components: [Menu, IcInputComponentContainer],
+      template: () => (
+        <ic-menu
+          open
+          activationType="automatic"
+          options={menuOptions}
+          menuId="menu-id"
+          inputLabel="input-label"
+          inputEl={input}
+          anchorEl={multiSelect}
+          value={menuOptions[0].value}
+          parentEl={multiSelect}
+        ></ic-menu>
+      ),
+    });
+    jest
+      .spyOn(page.rootInstance, "selectHighlightedOption")
+      .mockImplementation();
+    jest
+      .spyOn(page.rootInstance, "getMenuOptions")
+      .mockImplementation(() => menuOptions);
+    page.rootInstance.isMultiSelect = true;
+    await page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent(" "));
+    await page.waitForChanges();
+    expect(page.rootInstance.selectHighlightedOption).toHaveBeenCalledWith(
+      {
+        id: "key-id",
+      },
+      menuOptions,
+      -1
+    );
+    jest.spyOn(page.rootInstance, "setHighlightedOption").mockImplementation();
+    page.rootInstance.multiOptionClicked = menuOptions[0].value;
+    await page.waitForChanges();
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
+    await page.waitForChanges();
+    expect(page.rootInstance.setHighlightedOption).toHaveBeenCalledWith(0);
+    expect(page.rootInstance.multiOptionClicked).toBe(null);
+    page.rootInstance.multiOptionClicked = menuOptions[0].value;
+    await page.waitForChanges();
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowUp")
+    );
+    await page.waitForChanges();
+    expect(page.rootInstance.setHighlightedOption).toHaveBeenCalledWith(0);
+    expect(page.rootInstance.multiOptionClicked).toBe(null);
+    jest.spyOn(page.rootInstance, "emitSelectAll").mockImplementation();
+    jest.spyOn(helpers, "isMacDevice").mockImplementation(() => true);
+    await page.rootInstance.manualSetInputValueKeyboardOpen({
+      key: "a",
+      preventDefault: (): void => null,
+      stopImmediatePropagation: (): void => null,
+      metaKey: true,
+      target: {
+        id: "key-id",
+      },
+    });
+    await page.waitForChanges();
+    expect(page.rootInstance.emitSelectAll).toHaveBeenCalled();
+    jest.spyOn(helpers, "isMacDevice").mockImplementation(() => false);
+    await page.rootInstance.manualSetInputValueKeyboardOpen({
+      key: "a",
+      preventDefault: (): void => null,
+      stopImmediatePropagation: (): void => null,
+      ctrlKey: true,
+      target: {
+        id: "key-id",
+      },
+    });
+    await page.waitForChanges();
+    expect(page.rootInstance.emitSelectAll).toHaveBeenCalledTimes(2);
+    page.rootInstance.optionHighlighted = "doubleespresso";
+    page.rootInstance.multiOptionClicked = null;
+    await page.rootInstance.manualSetInputValueKeyboardOpen({
+      key: "ArrowDown",
+      preventDefault: (): void => null,
+      stopImmediatePropagation: (): void => null,
+      shiftKey: true,
+      target: {
+        id: "key-id",
+      },
+    });
+    await page.waitForChanges();
+    expect(page.rootInstance.selectHighlightedOption).toHaveBeenCalledWith(
+      {
+        id: "key-id",
+      },
+      menuOptions,
+      1
+    );
+    const eventSpy = jest.fn();
+    page.rootInstance.selectAllButton.addEventListener("focus", eventSpy);
+    await page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("Tab")
+    );
+    await page.waitForChanges();
+    expect(eventSpy).toHaveBeenCalled();
+    expect(page.rootInstance.menu.tabIndex).toBe(-1);
+    expect(page.rootInstance.preventClickOpen).toBe(true);
+    expect(page.rootInstance.optionHighlighted).toBe(undefined);
+  });
+  it("should test manualSetInputValueKeyboardOpen function when select on enter", async () => {
     const select = window.document.createElement(
       "IC-SELECT"
     ) as HTMLIcSelectElement;
@@ -857,12 +986,14 @@ describe("ic-menu in isolation", () => {
     const eventSpy = jest.fn();
     page.root.addEventListener("menuOptionSelect", eventSpy);
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("ArrowDown"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(
+      keyboardEvent("ArrowDown")
+    );
     await page.waitForChanges();
 
     expect(eventSpy).not.toHaveBeenCalled();
 
-    page.rootInstance.manSetInputValueKeyboardOpen(keyboardEvent("Enter"));
+    page.rootInstance.manualSetInputValueKeyboardOpen(keyboardEvent("Enter"));
     await page.waitForChanges();
 
     expect(eventSpy).toHaveBeenCalled();
@@ -978,7 +1109,7 @@ describe("ic-menu in isolation", () => {
 
     const el = page.rootInstance.menu.childNodes[1];
 
-    const event = { target: el };
+    const event = { target: el, shiftKey: false };
 
     await page.waitForChanges();
 
