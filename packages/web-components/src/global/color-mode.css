@@ -83,6 +83,20 @@ ic-theme,
   --ic-color-icon-action-default: var(--ic-color-icon-action-default-light);
   --ic-color-icon-error: var(--ic-color-icon-error-light);
 
+  /* Atoms */
+  --ic-atoms-input-text-field-content-placeholder: var(
+    --ic-atoms-input-text-field-content-placeholder-light
+  );
+  --ic-atoms-input-text-field-content: var(
+    --ic-atoms-input-text-field-content-light
+  );
+  --ic-atoms-input-text-field-content-disabled: var(
+    --ic-atoms-input-text-field-content-disabled-light
+  );
+  --ic-atoms-input-search-button: var(--ic-atoms-input-search-button-light);
+  --ic-atoms-input-divider: var(--ic-atoms-input-divider-light);
+  --ic-atoms-input-clear-button: var(--ic-atoms-input-clear-button-light);
+
   /* Typography */
   --ic-typography-color: var(--ic-color-text-primary);
 
@@ -198,6 +212,29 @@ ic-theme,
   );
   --ic-popover-menu-border: var(--ic-color-border-neutral-white);
   --ic-popover-menu-item-lighten: var(--ic-brand-lighten-40);
+
+  /* Search bar */
+  --ic-search-bar-background: var(--ic-color-background-primary);
+  --ic-search-bar-placeholder-text: var(
+    --ic-atoms-input-text-field-content-placeholder
+  );
+  --ic-search-bar-filled-text: var(--ic-atoms-input-text-field-content);
+  --ic-search-bar-disabled-text: var(
+    --ic-atoms-input-text-field-content-disabled
+  );
+  --ic-search-bar-filled-icon: var(--ic-atoms-input-search-button);
+  --ic-search-bar-icon-disabled: var(--ic-state-layer-darken-20);
+  --ic-search-bar-outline: var(--ic-color-border-neutral-grey-dark);
+  --ic-search-bar-outline-hover: var(--ic-color-border-neutral-hover-default);
+  --ic-search-bar-outline-pressed: var(
+    --ic-color-border-neutral-pressed-default
+  );
+  --ic-search-bar-outline-disabled: var(--ic-color-border-neutral-disabled);
+  --ic-search-bar-dropdown-background: var(--ic-color-background-primary);
+  --ic-search-bar-dropdown-divider: var(--ic-atoms-input-divider);
+  --ic-search-bar-dropdown-items-text: var(--ic-color-text-primary);
+  --ic-search-bar-dropdown-outline: var(--ic-color-border-neutral-grey-dark);
+  --ic-search-bar-clear-button: var(--ic-atoms-input-clear-button);
 
   /* Skeleton */
   --ic-skeleton-background: var(--ic-architectural-100);
@@ -394,6 +431,20 @@ ic-theme,
     --ic-color-icon-action-default: var(--ic-color-icon-action-default-dark);
     --ic-color-icon-error: var(--ic-color-icon-error-dark);
 
+    /* Atoms */
+    --ic-atoms-input-text-field-content-placeholder: var(
+      --ic-atoms-input-text-field-content-placeholder-dark
+    );
+    --ic-atoms-input-text-field-content: var(
+      --ic-atoms-input-text-field-content-dark
+    );
+    --ic-atoms-input-text-field-content-disabled: var(
+      --ic-atoms-input-text-field-content-disabled-dark
+    );
+    --ic-atoms-input-search-button: var(--ic-atoms-input-search-button-dark);
+    --ic-atoms-input-divider: var(--ic-atoms-input-divider-dark);
+    --ic-atoms-input-clear-button: var(--ic-atoms-input-clear-button-dark);
+
     /* Badge */
     --ic-badge-text: var(--ic-color-text-inverse);
     --ic-badge-icon: var(--ic-color-text-inverse);
@@ -514,6 +565,29 @@ ic-theme,
     );
     --ic-popover-menu-border: var(--ic-color-border-neutral-white);
     --ic-popover-menu-item-lighten: var(--ic-brand-lighten-40);
+
+    /* Search bar */
+    --ic-search-bar-background: var(--ic-color-background-primary);
+    --ic-search-bar-placeholder-text: var(
+      --ic-atoms-input-text-field-content-placeholder
+    );
+    --ic-search-bar-filled-text: var(--ic-atoms-input-text-field-content);
+    --ic-search-bar-disabled-text: var(
+      --ic-atoms-input-text-field-content-disabled
+    );
+    --ic-search-bar-filled-icon: var(--ic-atoms-input-search-button);
+    --ic-search-bar-icon-disabled: var(--ic-state-layer-lighten-20);
+    --ic-search-bar-outline: var(--ic-color-border-neutral-grey);
+    --ic-search-bar-outline-hover: var(--ic-color-border-neutral-hover-light);
+    --ic-search-bar-outline-pressed: var(
+      --ic-color-border-neutral-pressed-light
+    );
+    --ic-search-bar-outline-disabled: var(--ic-color-border-neutral-disabled);
+    --ic-search-bar-dropdown-background: var(--ic-color-background-primary);
+    --ic-search-bar-dropdown-divider: var(--ic-atoms-input-divider);
+    --ic-search-bar-dropdown-items-text: var(--ic-color-text-primary);
+    --ic-search-bar-dropdown-outline: var(--ic-color-border-neutral-grey-light);
+    --ic-search-bar-clear-button: var(--ic-atoms-input-clear-button);
 
     /* Skeleton */
     --ic-skeleton-background: var(--ic-architectural-400);
@@ -714,6 +788,20 @@ ic-theme,
   --ic-color-icon-action-default: var(--ic-color-icon-action-default-dark);
   --ic-color-icon-error: var(--ic-color-icon-error-dark);
 
+  /* Atoms */
+  --ic-atoms-input-text-field-content-placeholder: var(
+    --ic-atoms-input-text-field-content-placeholder-dark
+  );
+  --ic-atoms-input-text-field-content: var(
+    --ic-atoms-input-text-field-content-dark
+  );
+  --ic-atoms-input-text-field-content-disabled: var(
+    --ic-atoms-input-text-field-content-disabled-dark
+  );
+  --ic-atoms-input-search-button: var(--ic-atoms-input-search-button-dark);
+  --ic-atoms-input-divider: var(--ic-atoms-input-divider-dark);
+  --ic-atoms-input-clear-button: var(--ic-atoms-input-clear-button-dark);
+
   /* Badge */
   --ic-badge-text: var(--ic-color-text-inverse);
   --ic-badge-icon: var(--ic-color-text-inverse);
@@ -828,6 +916,27 @@ ic-theme,
   --ic-popover-menu-item-shortcut-disabled: var(--ic-color-text-disabled-light);
   --ic-popover-menu-border: var(--ic-color-border-neutral-white);
   --ic-popover-menu-item-lighten: var(--ic-brand-lighten-40);
+
+  /* Search bar */
+  --ic-search-bar-background: var(--ic-color-background-primary);
+  --ic-search-bar-placeholder-text: var(
+    --ic-atoms-input-text-field-content-placeholder
+  );
+  --ic-search-bar-filled-text: var(--ic-atoms-input-text-field-content);
+  --ic-search-bar-disabled-text: var(
+    --ic-atoms-input-text-field-content-disabled
+  );
+  --ic-search-bar-filled-icon: var(--ic-atoms-input-search-button);
+  --ic-search-bar-icon-disabled: var(--ic-state-layer-lighten-20);
+  --ic-search-bar-outline: var(--ic-color-border-neutral-grey);
+  --ic-search-bar-outline-hover: var(--ic-color-border-neutral-hover-light);
+  --ic-search-bar-outline-pressed: var(--ic-color-border-neutral-pressed-light);
+  --ic-search-bar-outline-disabled: var(--ic-color-border-neutral-disabled);
+  --ic-search-bar-dropdown-background: var(--ic-color-background-primary);
+  --ic-search-bar-dropdown-divider: var(--ic-atoms-input-divider);
+  --ic-search-bar-dropdown-items-text: var(--ic-color-text-primary);
+  --ic-search-bar-dropdown-outline: var(--ic-color-border-neutral-grey-light);
+  --ic-search-bar-clear-button: var(--ic-atoms-input-clear-button);
 
   /* Skeleton */
   --ic-skeleton-background: var(--ic-architectural-400);
