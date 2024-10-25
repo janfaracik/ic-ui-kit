@@ -534,7 +534,11 @@ export class PaginationBar {
                 ></ic-text-field>
               </ic-tooltip>
               <ic-button
-                appearance={appearance}
+                theme={
+                  appearance == "default" || appearance == "light"
+                    ? "light"
+                    : "dark"
+                }
                 variant="secondary"
                 onClick={this.goToPage}
                 size="small"
